@@ -1,0 +1,19 @@
+# IDE
+.idea/
+*.iml
+
+# Dependencies
+node_modules/
+
+# Angular
+.angular/
+dist/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
