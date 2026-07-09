@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { rateLimit } from "express-rate-limit";
+import { env } from "./config/env.js"
 
 const app = express();
 
@@ -9,7 +10,7 @@ app.use(helmet());
 
 app.use(
     cors({
-        origin: process.env.CLIENT_URL,
+        origin: env.clientURL,
     })
 );
 

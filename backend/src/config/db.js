@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
+import { env } from "./env.js";
 
 export async function connectDB() {
     try  {
-        await mongoose.connect(process.env.MONGODB_URI);
+        await mongoose.connect(env.mongoUri);
         console.log("Datenbank verbunden");
     } catch (e) {
         console.log("Fehler bei Datenbank-Verbindung: " + e.message);
