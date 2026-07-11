@@ -13,7 +13,7 @@ function handleMongooseError(error) {
     if (error.name === "CastError") {
         return {
             statusCode: 400,
-            message: "Ungültige ID"
+            message: "Ungültige ID",
         };
     }
 
@@ -30,16 +30,21 @@ export function notFoundHandler(req, res, next) {
     next(new AppError(`Route nicht gefunden: ${req.originalUrl}`, 404));
 }
 
-export function errorHandler(error, req, res, next) {
+export function errorHandler(error, req, res, _next) {
     const mongooseError = handleMongooseError(error);
 
     const statusCode = mongooseError?.statusCode || error.statusCode || 500;
 
+    const isOperational =
+        error instanceof AppError ||
+        error.isOperational === true ||
+        Boolean(mongooseError);
+
     const message =
         mongooseError?.message ||
-        (statusCode === 500 && env.nodeEnv === "production"
-        ? "Interner Serverfehler"
-        : error.message || "Interner Serverfehler");
+        (env.nodeEnv === "production" && !isOperational
+            ? "Interner Serverfehler"
+            : error.message || "Interner Serverfehler");
 
     const response = {
         message,
