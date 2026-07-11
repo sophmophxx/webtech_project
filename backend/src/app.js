@@ -3,6 +3,10 @@ import cors from "cors";
 import helmet from "helmet";
 import { rateLimit } from "express-rate-limit";
 import { env } from "./config/env.js"
+import {
+    errorHandler,
+    notFoundHandler,
+} from "./middleware/errorHandler.js";
 
 const app = express();
 
@@ -28,5 +32,8 @@ app.use(express.json({limit: "10kb"}));
 app.get("/", (req, res) => {
     res.send("Backend läuft")
 });
+
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 export default app;
