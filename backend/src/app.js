@@ -7,6 +7,7 @@ import {
     errorHandler,
     notFoundHandler,
 } from "./middleware/errorHandler.js";
+import clothingItemRoutes from "./routes/clothingItemRoutes.js";
 
 const app = express();
 
@@ -14,7 +15,7 @@ app.use(helmet());
 
 app.use(
     cors({
-        origin: env.clientURL,
+        origin: env.clientUrl,
     })
 );
 
@@ -30,8 +31,10 @@ app.use(limiter);
 app.use(express.json({limit: "10kb"}));
 
 app.get("/", (req, res) => {
-    res.send("Backend läuft")
+    res.send("Backend läuft");
 });
+
+app.use("/api/items", clothingItemRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
