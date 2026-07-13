@@ -23,7 +23,7 @@ router.post(
     createClothingItem
 );
 
-router.put(
+router.patch(
     "/:id",
     validateRequest(updateClothingItemSchema),
     updateClothingItem

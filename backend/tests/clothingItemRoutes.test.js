@@ -116,7 +116,7 @@ describe("Clothing item API", () => {
         const itemId = createResponse.body._id;
 
         const response = await request(app)
-            .put(`/api/items/${itemId}`)
+            .patch(`/api/items/${itemId}`)
             .send({
                 name: "Updated Dress",
                 category: "dresses",
