@@ -54,6 +54,10 @@ export function errorHandler(error, req, res, _next) {
         response.errors = mongooseError.errors;
     }
 
+    if (error.errors) {
+        response.errors = error.errors;
+    }
+
     if (env.nodeEnv !== "production" && env.nodeEnv !== "test") {
         response.stack = error.stack;
     }
