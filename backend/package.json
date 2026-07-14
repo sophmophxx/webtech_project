@@ -8,10 +8,13 @@
         "start": "node src/server.js",
         "test": "vitest run",
         "test:watch": "vitest",
+        "test:coverage": "vitest run --coverage",
         "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
         "format": "prettier . --write",
         "format:check": "prettier . --check",
         "audit": "npm audit --audit-level=high",
+        "fix": "npm run format && npm run lint:fix",
         "validate": "npm run lint && npm run format:check && npm test && npm run audit"
     },
     "keywords": [],
@@ -29,6 +32,7 @@
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",
+        "@vitest/coverage-v8": "^4.1.10",
         "eslint": "^10.7.0",
         "globals": "^17.7.0",
         "mongodb-memory-server": "^11.2.0",
