@@ -52,9 +52,7 @@ export function errorHandler(error, req, res, _next) {
 
     if (mongooseError?.errors) {
         response.errors = mongooseError.errors;
-    }
-
-    if (error.errors) {
+    } else if (error.errors) {
         response.errors = error.errors;
     }
 
