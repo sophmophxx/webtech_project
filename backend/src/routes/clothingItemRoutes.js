@@ -17,11 +17,7 @@ const router = express.Router();
 router.get("/", getClothingItems);
 router.get("/:id", getClothingItemById);
 
-router.post(
-    "/",
-    validateRequest(createClothingItemSchema),
-    createClothingItem
-);
+router.post("/", validateRequest(createClothingItemSchema), createClothingItem);
 
 router.patch(
     "/:id",

@@ -2,11 +2,8 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { rateLimit } from "express-rate-limit";
-import { env } from "./config/env.js"
-import {
-    errorHandler,
-    notFoundHandler,
-} from "./middleware/errorHandler.js";
+import { env } from "./config/env.js";
+import { errorHandler, notFoundHandler } from "./middleware/errorHandler.js";
 import clothingItemRoutes from "./routes/clothingItemRoutes.js";
 
 const app = express();
@@ -28,7 +25,7 @@ const limiter = rateLimit({
 
 app.use(limiter);
 
-app.use(express.json({limit: "10kb"}));
+app.use(express.json({ limit: "10kb" }));
 
 app.get("/", (req, res) => {
     res.send("Backend läuft");

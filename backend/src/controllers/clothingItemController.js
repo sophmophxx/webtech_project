@@ -42,14 +42,10 @@ export const updateClothingItem = asyncHandler(async (req, res) => {
         throw new AppError("Ungültige Item-ID", 400);
     }
 
-    const updatedItem = await ClothingItem.findByIdAndUpdate(
-        id,
-        req.body,
-        {
-            returnDocument: "after",
-            runValidators: true,
-        }
-    ).exec();
+    const updatedItem = await ClothingItem.findByIdAndUpdate(id, req.body, {
+        returnDocument: "after",
+        runValidators: true,
+    }).exec();
 
     if (!updatedItem) {
         throw new AppError("Item nicht gefunden", 404);
