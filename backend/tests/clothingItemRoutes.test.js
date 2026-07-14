@@ -164,4 +164,121 @@ describe("Clothing item API", () => {
         expect(response.status).toBe(400);
         expect(response.body.message).toBeDefined();
     });
+
+    it("returns 400 when name is missing", async () => {
+        const response = await request(app)
+            .post("/api/items")
+            .send({
+                category: "dresses",
+            });
+
+        expect(response.status).toBe(400);
+        expect(response.body.message).toBe("Ungültige Eingabedaten");
+        expect(response.body.errors).toHaveProperty("name");
+    });
+
+    it("returns 400 when category is missing", async () => {
+        const response = await request(app)
+            .post("/api/items")
+            .send({
+                name: "Black Dress",
+            });
+
+        expect(response.status).toBe(400);
+        expect(response.body.message).toBe("Ungültige Eingabedaten");
+        expect(response.body.errors).toHaveProperty("category");
+    });
+
+    it("allows partial update with valid data", async () => {
+        const createResponse = await request(app)
+            .post("/api/items")
+            .send({
+                name: "Black Dress",
+                category: "dresses",
+                color: "black",
+            });
+
+        const itemId = createResponse.body._id;
+
+        const response = await request(app)
+            .patch(`/api/items/${itemId}`)
+            .send({
+                color: "red",
+            });
+
+        expect(response.status).toBe(200);
+        expect(response.body._id).toBe(itemId);
+        expect(response.body.name).toBe("Black Dress");
+        expect(response.body.category).toBe("dresses");
+        expect(response.body.color).toBe("red");
+    });
+
+    it("returns 400 when category is invalid", async () => {
+        const response = await request(app)
+            .post("/api/items")
+            .send({
+                name: "Black Dress",
+                category: "invalid-category",
+            });
+
+        expect(response.status).toBe(400);
+        expect(response.body.message).toBe("Ungültige Eingabedaten");
+        expect(response.body.errors).toHaveProperty("category");
+    });
+
+    it("returns 400 when imageUrl is invalid", async () => {
+        const response = await request(app)
+            .post("/api/items")
+            .send({
+                name: "Black Dress",
+                category: "dresses",
+                imageUrl: "not-a-url",
+            });
+
+        expect(response.status).toBe(400);
+        expect(response.body.message).toBe("Ungültige Eingabedaten");
+        expect(response.body.errors).toHaveProperty("imageUrl");
+    });
+
+    it("returns 400 when patch category is invalid", async () => {
+        const createResponse = await request(app)
+            .post("/api/items")
+            .send({
+                name: "Black Dress",
+                category: "dresses",
+            });
+
+        const itemId = createResponse.body._id;
+
+        const response = await request(app)
+            .patch(`/api/items/${itemId}`)
+            .send({
+                category: "wrong-category",
+            });
+
+        expect(response.status).toBe(400);
+        expect(response.body.message).toBe("Ungültige Eingabedaten");
+        expect(response.body.errors).toHaveProperty("category");
+    });
+
+    it("returns 400 when patch imageUrl is invalid", async () => {
+        const createResponse = await request(app)
+            .post("/api/items")
+            .send({
+                name: "Black Dress",
+                category: "dresses",
+            });
+
+        const itemId = createResponse.body._id;
+
+        const response = await request(app)
+            .patch(`/api/items/${itemId}`)
+            .send({
+                imageUrl: "invalid-url",
+            });
+
+        expect(response.status).toBe(400);
+        expect(response.body.message).toBe("Ungültige Eingabedaten");
+        expect(response.body.errors).toHaveProperty("imageUrl");
+    });
 });
