@@ -32,7 +32,7 @@ app.get("/", (req, res) => {
     res.send("Backend läuft");
 });
 
-app.use("/api/health", healthRoutes)
+app.use("/api/health", healthRoutes);
 app.use("/api/items", clothingItemRoutes);
 
 app.use(notFoundHandler);
