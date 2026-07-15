@@ -5,6 +5,7 @@ import { rateLimit } from "express-rate-limit";
 import { env } from "./config/env.js";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler.js";
 import clothingItemRoutes from "./routes/clothingItemRoutes.js";
+import healthRoutes from "./routes/healthRoutes.js";
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.get("/", (req, res) => {
     res.send("Backend läuft");
 });
 
+app.use("/api/health", healthRoutes)
 app.use("/api/items", clothingItemRoutes);
 
 app.use(notFoundHandler);
