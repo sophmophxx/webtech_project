@@ -10,7 +10,7 @@ beforeAll(async () => {
 
 describe("Health API", () => {
     it("returns health status", async () => {
-        const response = await request(app).get("/api/health");
+        const response = await request(app).get("/api/v1/health");
 
         expect(response.status).toBe(200);
         expect(response.body.status).toBe("ok");
