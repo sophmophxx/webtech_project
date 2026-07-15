@@ -20,4 +20,8 @@ export const createClothingItemSchema = z.object({
     favorite: z.boolean().optional(),
 });
 
-export const updateClothingItemSchema = createClothingItemSchema.partial();
+export const updateClothingItemSchema = createClothingItemSchema
+    .partial()
+    .refine((data) => Object.keys(data).length > 0, {
+        message: "Mindestens ein Feld muss aktualisiert werden",
+    });

@@ -7,6 +7,8 @@ import { createTestApp } from "./helpers/createTestApp.js";
 let app;
 let mongoServer;
 
+const ITEMS_API = "/api/v1/items";
+
 beforeAll(async () => {
     process.env.NODE_ENV = "test";
     process.env.CLIENT_URL = "http://localhost:4200";
@@ -55,7 +57,7 @@ describe("Clothing item API", () => {
             favorite: true,
         };
 
-        const response = await request(app).post("/api/v1/items").send(payload);
+        const response = await request(app).post(ITEMS_API).send(payload);
 
         expect(response.status).toBe(201);
         expect(response.body).toHaveProperty("_id");
@@ -65,17 +67,17 @@ describe("Clothing item API", () => {
     });
 
     it("returns all clothing items", async () => {
-        await request(app).post("/api/v1/items").send({
+        await request(app).post(ITEMS_API).send({
             name: "Black Dress",
             category: "dresses",
         });
 
-        await request(app).post("/api/v1/items").send({
+        await request(app).post(ITEMS_API).send({
             name: "Silver Bag",
             category: "bags",
         });
 
-        const response = await request(app).get("/api/v1/items");
+        const response = await request(app).get(ITEMS_API);
 
         expect(response.status).toBe(200);
         expect(response.body).toHaveLength(2);
@@ -84,14 +86,14 @@ describe("Clothing item API", () => {
     });
 
     it("returns one clothing item by id", async () => {
-        const createResponse = await request(app).post("/api/v1/items").send({
+        const createResponse = await request(app).post(ITEMS_API).send({
             name: "Black Boots",
             category: "shoes",
         });
 
         const itemId = createResponse.body._id;
 
-        const response = await request(app).get(`/api/v1/items/${itemId}`);
+        const response = await request(app).get(`${ITEMS_API}/${itemId}`);
 
         expect(response.status).toBe(200);
         expect(response.body._id).toBe(itemId);
@@ -99,7 +101,7 @@ describe("Clothing item API", () => {
     });
 
     it("updates a clothing item", async () => {
-        const createResponse = await request(app).post("/api/v1/items").send({
+        const createResponse = await request(app).post(ITEMS_API).send({
             name: "Old Dress",
             category: "dresses",
             color: "black",
@@ -107,11 +109,13 @@ describe("Clothing item API", () => {
 
         const itemId = createResponse.body._id;
 
-        const response = await request(app).patch(`/api/v1/items/${itemId}`).send({
-            name: "Updated Dress",
-            category: "dresses",
-            color: "red",
-        });
+        const response = await request(app)
+            .patch(`${ITEMS_API}/${itemId}`)
+            .send({
+                name: "Updated Dress",
+                category: "dresses",
+                color: "red",
+            });
 
         expect(response.status).toBe(200);
         expect(response.body._id).toBe(itemId);
@@ -120,7 +124,7 @@ describe("Clothing item API", () => {
     });
 
     it("deletes a clothing item", async () => {
-        const createResponse = await request(app).post("/api/v1/items").send({
+        const createResponse = await request(app).post(ITEMS_API).send({
             name: "Delete Me",
             category: "other",
         });
@@ -134,7 +138,7 @@ describe("Clothing item API", () => {
         expect(deleteResponse.status).toBe(200);
         expect(deleteResponse.body.message).toBe("Item gelöscht");
 
-        const getResponse = await request(app).get(`/api/v1/items/${itemId}`);
+        const getResponse = await request(app).get(`${ITEMS_API}/${itemId}`);
 
         expect(getResponse.status).toBe(404);
     });
@@ -184,9 +188,11 @@ describe("Clothing item API", () => {
 
         const itemId = createResponse.body._id;
 
-        const response = await request(app).patch(`/api/v1/items/${itemId}`).send({
-            color: "red",
-        });
+        const response = await request(app)
+            .patch(`/api/v1/items/${itemId}`)
+            .send({
+                color: "red",
+            });
 
         expect(response.status).toBe(200);
         expect(response.body._id).toBe(itemId);
@@ -226,9 +232,11 @@ describe("Clothing item API", () => {
 
         const itemId = createResponse.body._id;
 
-        const response = await request(app).patch(`/api/v1/items/${itemId}`).send({
-            category: "wrong-category",
-        });
+        const response = await request(app)
+            .patch(`/api/v1/items/${itemId}`)
+            .send({
+                category: "wrong-category",
+            });
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("Ungültige Eingabedaten");
@@ -243,9 +251,11 @@ describe("Clothing item API", () => {
 
         const itemId = createResponse.body._id;
 
-        const response = await request(app).patch(`/api/v1/items/${itemId}`).send({
-            imageUrl: "invalid-url",
-        });
+        const response = await request(app)
+            .patch(`/api/v1/items/${itemId}`)
+            .send({
+                imageUrl: "invalid-url",
+            });
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("Ungültige Eingabedaten");
