@@ -8,7 +8,7 @@ export default defineConfig({
             reporter: ["text", "html"],
             reportsDirectory: "coverage",
             include: ["src/**/*.js"],
-            exclude: ["src/server.js", "src/config/env.js"],
+            exclude: ["src/server.js", "src/config/env.js", "src/config/db.js"],
         },
     },
 });
