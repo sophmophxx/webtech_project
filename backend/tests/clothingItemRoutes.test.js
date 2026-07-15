@@ -2,6 +2,7 @@ import request from "supertest";
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import { describe, it, expect, beforeAll, afterAll, afterEach } from "vitest";
+import { createTestApp } from "./helpers/createTestApp.js";
 
 let app;
 let mongoServer;
@@ -17,7 +18,7 @@ beforeAll(async () => {
 
     await mongoose.connect(mongoUri);
 
-    app = (await import("../src/app.js")).default;
+    app = await createTestApp();
 });
 
 afterEach(async () => {
