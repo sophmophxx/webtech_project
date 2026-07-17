@@ -132,7 +132,7 @@ describe("Clothing item API", () => {
         const itemId = createResponse.body._id;
 
         const deleteResponse = await request(app).delete(
-            `/api/v1/items/${itemId}`
+            `${ITEMS_API}/${itemId}`
         );
 
         expect(deleteResponse.status).toBe(200);
@@ -144,14 +144,14 @@ describe("Clothing item API", () => {
     });
 
     it("returns 400 for an invalid item id", async () => {
-        const response = await request(app).get("/api/v1/items/not-a-valid-id");
+        const response = await request(app).get(`${ITEMS_API}/not-a-valid-id`);
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("Ungültige Item-ID");
     });
 
     it("returns 400 when required fields are missing", async () => {
-        const response = await request(app).post("/api/v1/items").send({
+        const response = await request(app).post(ITEMS_API).send({
             category: "dresses",
         });
 
@@ -160,7 +160,7 @@ describe("Clothing item API", () => {
     });
 
     it("returns 400 when name is missing", async () => {
-        const response = await request(app).post("/api/v1/items").send({
+        const response = await request(app).post(ITEMS_API).send({
             category: "dresses",
         });
 
@@ -170,7 +170,7 @@ describe("Clothing item API", () => {
     });
 
     it("returns 400 when category is missing", async () => {
-        const response = await request(app).post("/api/v1/items").send({
+        const response = await request(app).post(ITEMS_API).send({
             name: "Black Dress",
         });
 
@@ -180,7 +180,7 @@ describe("Clothing item API", () => {
     });
 
     it("allows partial update with valid data", async () => {
-        const createResponse = await request(app).post("/api/v1/items").send({
+        const createResponse = await request(app).post(ITEMS_API).send({
             name: "Black Dress",
             category: "dresses",
             color: "black",
@@ -189,7 +189,7 @@ describe("Clothing item API", () => {
         const itemId = createResponse.body._id;
 
         const response = await request(app)
-            .patch(`/api/v1/items/${itemId}`)
+            .patch(`${ITEMS_API}/${itemId}`)
             .send({
                 color: "red",
             });
@@ -202,7 +202,7 @@ describe("Clothing item API", () => {
     });
 
     it("returns 400 when category is invalid", async () => {
-        const response = await request(app).post("/api/v1/items").send({
+        const response = await request(app).post(ITEMS_API).send({
             name: "Black Dress",
             category: "invalid-category",
         });
@@ -213,7 +213,7 @@ describe("Clothing item API", () => {
     });
 
     it("returns 400 when imageUrl is invalid", async () => {
-        const response = await request(app).post("/api/v1/items").send({
+        const response = await request(app).post(ITEMS_API).send({
             name: "Black Dress",
             category: "dresses",
             imageUrl: "not-a-url",
@@ -225,7 +225,7 @@ describe("Clothing item API", () => {
     });
 
     it("returns 400 when patch category is invalid", async () => {
-        const createResponse = await request(app).post("/api/v1/items").send({
+        const createResponse = await request(app).post(ITEMS_API).send({
             name: "Black Dress",
             category: "dresses",
         });
@@ -233,7 +233,7 @@ describe("Clothing item API", () => {
         const itemId = createResponse.body._id;
 
         const response = await request(app)
-            .patch(`/api/v1/items/${itemId}`)
+            .patch(`${ITEMS_API}/${itemId}`)
             .send({
                 category: "wrong-category",
             });
@@ -244,7 +244,7 @@ describe("Clothing item API", () => {
     });
 
     it("returns 400 when patch imageUrl is invalid", async () => {
-        const createResponse = await request(app).post("/api/v1/items").send({
+        const createResponse = await request(app).post(ITEMS_API).send({
             name: "Black Dress",
             category: "dresses",
         });
@@ -252,7 +252,7 @@ describe("Clothing item API", () => {
         const itemId = createResponse.body._id;
 
         const response = await request(app)
-            .patch(`/api/v1/items/${itemId}`)
+            .patch(`${ITEMS_API}/${itemId}`)
             .send({
                 imageUrl: "invalid-url",
             });
