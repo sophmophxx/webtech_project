@@ -1,0 +1,54 @@
+<section class="wardrobe-page">
+  <header class="wardrobe-page__header">
+    <div>
+      <p class="wardrobe-page__eyebrow">Wardrobe Archive</p>
+      <h1>Deine Kleidungsstücke</h1>
+    </div>
+  </header>
+
+  @if (isLoading()) {
+    <div class="wardrobe-page__state">
+      <mat-spinner diameter="40" />
+      <p>Lade Kleidungsstücke...</p>
+    </div>
+  } @else if (errorMessage()) {
+    <div class="wardrobe-page__state wardrobe-page__state--error">
+      <mat-icon>error</mat-icon>
+      <p>{{ errorMessage() }}</p>
+    </div>
+  } @else if (items().length === 0) {
+    <div class="wardrobe-page__state">
+      <mat-icon>checkroom</mat-icon>
+      <p>Noch keine Kleidungsstücke vorhanden.</p>
+    </div>
+  } @else {
+    <div class="wardrobe-page__grid">
+      @for (item of items(); track item._id) {
+        <mat-card class="wardrobe-card">
+          @if (item.imageUrl) {
+            <img mat-card-image [src]="item.imageUrl" [alt]="item.name" />
+          }
+
+          <mat-card-header>
+            <mat-card-title>{{ item.name }}</mat-card-title>
+            <mat-card-subtitle>{{ item.category }}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            @if (item.brand) {
+              <p><strong>Brand:</strong> {{ item.brand }}</p>
+            }
+
+            @if (item.color) {
+              <p><strong>Farbe:</strong> {{ item.color }}</p>
+            }
+
+            @if (item.size) {
+              <p><strong>Größe:</strong> {{ item.size }}</p>
+            }
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  }
+</section>
