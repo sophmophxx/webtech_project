@@ -5,10 +5,11 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { ClothingItemService } from '../../../../core/services/clothing-item.service';
 import { ClothingItem } from '../../../../shared/models/clothing-item.model';
+import { ClothingItemCard } from '../../components/clothing-item-card/clothing-item-card';
 
 @Component({
   selector: 'app-wardrobe-page',
-  imports: [MatCardModule, MatProgressSpinnerModule, MatIconModule],
+  imports: [MatCardModule, MatProgressSpinnerModule, MatIconModule, ClothingItemCard],
   templateUrl: './wardrobe-page.html',
   styleUrl: './wardrobe-page.scss',
 })
