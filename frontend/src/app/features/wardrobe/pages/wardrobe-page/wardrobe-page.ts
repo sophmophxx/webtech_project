@@ -1,16 +1,16 @@
-import { Component, inject, OnInit, signal } from "@angular/core";
-import { MatCardModule } from "@angular/material/card";
-import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { MatIconModule } from "@angular/material/icon";
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
 
-import { ClothingItemService } from "../../../../core/services/clothing-item.service";
-import { ClothingItem } from "../../../../shared/models/clothing-item.model";
+import { ClothingItemService } from '../../../../core/services/clothing-item.service';
+import { ClothingItem } from '../../../../shared/models/clothing-item.model';
 
 @Component({
-  selector: "app-wardrobe-page",
+  selector: 'app-wardrobe-page',
   imports: [MatCardModule, MatProgressSpinnerModule, MatIconModule],
-  templateUrl: "./wardrobe-page.html",
-  styleUrl: "./wardrobe-page.scss",
+  templateUrl: './wardrobe-page.html',
+  styleUrl: './wardrobe-page.scss',
 })
 export class WardrobePage implements OnInit {
   private readonly clothingItemService = inject(ClothingItemService);
@@ -30,7 +30,7 @@ export class WardrobePage implements OnInit {
         this.isLoading.set(false);
       },
       error: () => {
-        this.errorMessage.set("Kleidungsstücke konnten nicht geladen werden.");
+        this.errorMessage.set('Kleidungsstücke konnten nicht geladen werden.');
         this.isLoading.set(false);
       },
     });
