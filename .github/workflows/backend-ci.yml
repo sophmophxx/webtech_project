@@ -5,14 +5,18 @@ on:
         branches:
             - main
         paths:
-            - "../../../.."
-            - "backend-ci.yml"
+        - "backend/**"
+        - "package.json"
+        - "package-lock.json"
+        - ".github/workflows/backend-ci.yml"
     pull_request:
         branches:
             - main
         paths:
-            - "../../../.."
-            - "backend-ci.yml"
+        - "backend/**"
+        - "package.json"
+        - "package-lock.json"
+        - ".github/workflows/backend-ci.yml"
 
 jobs:
     test-backend:
