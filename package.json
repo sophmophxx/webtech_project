@@ -1,0 +1,28 @@
+{
+  "name": "webtech_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently -n BACKEND,FRONTEND -c blue,magenta \"npm run dev --prefix backend\" \"npm start --prefix frontend\"",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm start --prefix frontend",
+    "test": "npm test --prefix backend && npm run test:ci --prefix frontend",
+    "validate": "npm run validate --prefix backend && npm run validate --prefix frontend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sophmophxx/webtech_project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/sophmophxx/webtech_project/issues"
+  },
+  "homepage": "https://github.com/sophmophxx/webtech_project#readme",
+  "devDependencies": {
+    "concurrently": "^10.0.4"
+  }
+}
