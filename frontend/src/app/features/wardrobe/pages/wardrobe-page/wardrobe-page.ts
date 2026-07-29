@@ -36,4 +36,15 @@ export class WardrobePage implements OnInit {
       },
     });
   }
+
+  deleteItem(id: string): void {
+    this.clothingItemService.deleteItem(id).subscribe({
+      next: () => {
+        this.items.update((items) => items.filter((item) => item._id !== id));
+      },
+      error: () => {
+        this.errorMessage.set('Kleidungsstück konnte nicht gelöscht werden.');
+      },
+    });
+  }
 }

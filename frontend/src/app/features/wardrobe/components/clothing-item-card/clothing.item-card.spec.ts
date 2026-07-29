@@ -56,4 +56,13 @@ describe('ClothingItemCard', () => {
     expect(image.getAttribute('src')).toBe('/images/seed/black-dress.jpg');
     expect(image.getAttribute('alt')).toBe('Black Draped Dress');
   });
+
+  it('should emit item id when delete button is clicked', () => {
+    const emitSpy = vi.spyOn(component.deleteItem, 'emit');
+
+    const button = fixture.nativeElement.querySelector('button') as HTMLButtonElement;
+    button.click();
+
+    expect(emitSpy).toHaveBeenCalledWith('1');
+  });
 });
