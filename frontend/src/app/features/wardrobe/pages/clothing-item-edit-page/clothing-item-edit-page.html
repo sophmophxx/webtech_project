@@ -1,0 +1,29 @@
+<section class="clothing-item-edit-page">
+  <a mat-button routerLink="/">
+    <mat-icon>arrow_back</mat-icon>
+    Zurück zur Übersicht
+  </a>
+
+  @if (isLoading()) {
+    <div class="clothing-item-edit-page__state">
+      <mat-spinner diameter="40" />
+      <p>Lade Kleidungsstück...</p>
+    </div>
+  } @else if (errorMessage()) {
+    <div class="clothing-item-edit-page__state clothing-item-edit-page__state--error">
+      <mat-icon>error</mat-icon>
+      <p>{{ errorMessage() }}</p>
+    </div>
+  } @else if (item(); as item) {
+    <header class="clothing-item-edit-page__header">
+      <p class="clothing-item-edit-page__eyebrow">Wardrobe Archive</p>
+      <h1>{{ item.name }} bearbeiten</h1>
+    </header>
+
+    <app-clothing-item-form
+      [initialItem]="item"
+      submitButtonLabel="Änderungen speichern"
+      (formSubmit)="updateItem($event)"
+    />
+  }
+</section>

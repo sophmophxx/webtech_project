@@ -1,4 +1,4 @@
-import { Component, inject, output } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, inject, output } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 
 import { CreateClothingItemRequest } from '../../../../core/services/clothing-item.service';
-import { ClothingItemCategory } from '../../../../shared/models/clothing-item.model';
+import { ClothingItem, ClothingItemCategory } from '../../../../shared/models/clothing-item.model';
 
 @Component({
   selector: 'app-clothing-item-form',
@@ -22,8 +22,11 @@ import { ClothingItemCategory } from '../../../../shared/models/clothing-item.mo
   templateUrl: './clothing-item-form.html',
   styleUrl: './clothing-item-form.scss',
 })
-export class ClothingItemForm {
+export class ClothingItemForm implements OnChanges {
   private readonly formBuilder = inject(NonNullableFormBuilder);
+
+  @Input() initialItem: ClothingItem | null = null;
+  @Input() submitButtonLabel = 'Kleidungsstück speichern';
 
   readonly formSubmit = output<CreateClothingItemRequest>();
 
@@ -49,6 +52,21 @@ export class ClothingItemForm {
     favorite: [false],
   });
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['initialItem'] && this.initialItem) {
+      this.itemForm.reset({
+        name: this.initialItem.name,
+        category: this.initialItem.category,
+        brand: this.initialItem.brand ?? '',
+        color: this.initialItem.color ?? '',
+        size: this.initialItem.size ?? '',
+        imageUrl: this.initialItem.imageUrl ?? '',
+        notes: this.initialItem.notes ?? '',
+        favorite: this.initialItem.favorite ?? false,
+      });
+    }
+  }
+
   submitForm(): void {
     if (this.itemForm.invalid) {
       this.itemForm.markAllAsTouched();
@@ -56,7 +74,6 @@ export class ClothingItemForm {
     }
 
     this.formSubmit.emit(this.buildCreatePayload());
-    this.resetForm();
   }
 
   private buildCreatePayload(): CreateClothingItemRequest {
@@ -72,18 +89,5 @@ export class ClothingItemForm {
       ...(formValue.notes.trim() && { notes: formValue.notes.trim() }),
       favorite: formValue.favorite,
     };
-  }
-
-  private resetForm(): void {
-    this.itemForm.reset({
-      name: '',
-      category: 'tops',
-      brand: '',
-      color: '',
-      size: '',
-      imageUrl: '',
-      notes: '',
-      favorite: false,
-    });
   }
 }

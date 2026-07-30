@@ -20,6 +20,10 @@
       <h1>{{ item.name }}</h1>
       <p>{{ item.category }}</p>
     </header>
+    <a mat-raised-button color="primary" [routerLink]="['/items', item._id, 'edit']">
+      <mat-icon>edit</mat-icon>
+      Bearbeiten
+    </a>
 
     <mat-card class="clothing-item-detail-card">
       @if (item.imageUrl) {

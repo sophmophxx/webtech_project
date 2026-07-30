@@ -1,5 +1,26 @@
 import { z } from "zod";
 
+const imageUrlSchema = z
+    .string()
+    .trim()
+    .refine(
+        (value) => {
+            if (value.startsWith("/")) {
+                return true;
+            }
+
+            try {
+                const url = new URL(value);
+                return url.protocol === "http:" || url.protocol === "https:";
+            } catch {
+                return false;
+            }
+        },
+        {
+            message: "Ungültige Bild-URL",
+        }
+    );
+
 export const createClothingItemSchema = z.object({
     name: z.string().trim().min(1).max(100),
     category: z.enum([
@@ -15,7 +36,7 @@ export const createClothingItemSchema = z.object({
     brand: z.string().trim().max(100).optional(),
     color: z.string().trim().max(50).optional(),
     size: z.string().trim().max(20).optional(),
-    imageUrl: z.string().trim().url().optional(),
+    imageUrl: imageUrlSchema.optional(),
     notes: z.string().trim().max(500).optional(),
     favorite: z.boolean().optional(),
 });

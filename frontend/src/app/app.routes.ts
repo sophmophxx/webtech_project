@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { WardrobePage } from './features/wardrobe/pages/wardrobe-page/wardrobe-page';
 import { ClothingItemCreatePage } from './features/wardrobe/pages/clothing-item-create-page/clothing-item-create-page';
 import { ClothingItemDetailPage } from './features/wardrobe/pages/clothing-item-detail-page/clothing-item-detail-page';
+import { ClothingItemEditPage } from './features/wardrobe/pages/clothing-item-edit-page/clothing-item-edit-page';
 
 export const routes: Routes = [
   {
@@ -12,6 +13,10 @@ export const routes: Routes = [
   {
     path: 'items/new',
     component: ClothingItemCreatePage,
+  },
+  {
+    path: 'items/:id/edit',
+    component: ClothingItemEditPage,
   },
   {
     path: 'items/:id',
