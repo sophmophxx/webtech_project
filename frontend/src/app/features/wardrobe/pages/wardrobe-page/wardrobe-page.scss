@@ -42,15 +42,3 @@
 .wardrobe-card {
   height: 100%;
 }
-
-.wardrobe-form {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-.wardrobe-form__notes {
-  grid-column: 1 / -1;
-}

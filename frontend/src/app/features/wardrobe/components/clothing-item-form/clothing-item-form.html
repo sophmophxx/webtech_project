@@ -1,0 +1,54 @@
+<form class="clothing-item-form" [formGroup]="itemForm" (ngSubmit)="submitForm()">
+  <mat-form-field appearance="outline">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" placeholder="Black Draped Dress" />
+
+    @if (itemForm.controls.name.hasError('required') && itemForm.controls.name.touched) {
+      <mat-error>Name ist erforderlich.</mat-error>
+    }
+
+    @if (itemForm.controls.name.hasError('maxlength') && itemForm.controls.name.touched) {
+      <mat-error>Name darf maximal 100 Zeichen lang sein.</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Kategorie</mat-label>
+    <mat-select formControlName="category">
+      @for (category of categories; track category) {
+        <mat-option [value]="category">
+          {{ category }}
+        </mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Brand</mat-label>
+    <input matInput formControlName="brand" placeholder="Prada" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Farbe</mat-label>
+    <input matInput formControlName="color" placeholder="black" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Größe</mat-label>
+    <input matInput formControlName="size" placeholder="S" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Bild-URL</mat-label>
+    <input matInput formControlName="imageUrl" placeholder="/images/seed/black-dress.jpg" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="clothing-item-form__notes">
+    <mat-label>Notizen</mat-label>
+    <textarea matInput formControlName="notes" rows="3"></textarea>
+  </mat-form-field>
+
+  <mat-checkbox formControlName="favorite"> Favorit </mat-checkbox>
+
+  <button mat-raised-button color="primary" type="submit">Kleidungsstück speichern</button>
+</form>

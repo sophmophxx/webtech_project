@@ -5,64 +5,6 @@
       <h1>Deine Kleidungsstücke</h1>
     </div>
   </header>
-
-  <form class="wardrobe-form" [formGroup]="itemForm" (ngSubmit)="createItem()">
-    <mat-form-field appearance="outline">
-      <mat-label>Name</mat-label>
-      <input matInput formControlName="name" placeholder="Black Draped Dress" />
-
-      @if (itemForm.controls.name.hasError('required') && itemForm.controls.name.touched) {
-        <mat-error>Name ist erforderlich.</mat-error>
-      }
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Kategorie</mat-label>
-      <mat-select formControlName="category">
-        @for (category of categories; track category) {
-          <mat-option [value]="category">
-            {{ category }}
-          </mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Brand</mat-label>
-      <input matInput formControlName="brand" placeholder="Prada" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Farbe</mat-label>
-      <input matInput formControlName="color" placeholder="black" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Größe</mat-label>
-      <input matInput formControlName="size" placeholder="S" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Bild-URL</mat-label>
-      <input matInput formControlName="imageUrl" placeholder="https://..." />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="wardrobe-form__notes">
-      <mat-label>Notizen</mat-label>
-      <textarea matInput formControlName="notes" rows="3"></textarea>
-    </mat-form-field>
-
-    <mat-checkbox formControlName="favorite"> Favorit </mat-checkbox>
-
-    <button mat-raised-button color="primary" type="submit" [disabled]="isSubmitting()">
-      @if (isSubmitting()) {
-        Speichern...
-      } @else {
-        Kleidungsstück hinzufügen
-      }
-    </button>
-  </form>
-
   @if (isLoading()) {
     <div class="wardrobe-page__state">
       <mat-spinner diameter="40" />

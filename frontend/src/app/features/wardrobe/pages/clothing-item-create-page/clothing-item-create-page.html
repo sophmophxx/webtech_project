@@ -1,0 +1,19 @@
+<section class="clothing-item-create-page">
+  <a mat-button routerLink="/">
+    <mat-icon>arrow_back</mat-icon>
+    Zurück zur Übersicht
+  </a>
+
+  <header class="clothing-item-create-page__header">
+    <p class="clothing-item-create-page__eyebrow">Wardrobe Archive</p>
+    <h1>Neues Kleidungsstück</h1>
+  </header>
+
+  @if (errorMessage()) {
+    <p class="clothing-item-create-page__error">
+      {{ errorMessage() }}
+    </p>
+  }
+
+  <app-clothing-item-form (formSubmit)="createItem($event)" />
+</section>
