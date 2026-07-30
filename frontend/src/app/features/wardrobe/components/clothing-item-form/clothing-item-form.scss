@@ -1,33 +1,129 @@
-.clothing-item-create-page {
-  padding: 2rem;
-  max-width: 960px;
+:host {
+  display: block;
 }
 
-.clothing-item-create-page__header {
-  margin: 1.5rem 0 2rem;
+.archive-form {
+  width: min(920px, 100%);
+  margin: 0 auto;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-.clothing-item-create-page__eyebrow {
-  margin: 0;
+.archive-form__field {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 2rem;
+  align-items: start;
+  padding: 1.15rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.archive-form__field label,
+.archive-form__checkbox span {
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.75rem;
-  opacity: 0.7;
+  letter-spacing: 0.16em;
+  font-size: 0.62rem;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.48);
 }
 
-.clothing-item-create-page h1 {
-  margin: 0.25rem 0 0;
+.archive-form input,
+.archive-form select,
+.archive-form textarea {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  font: inherit;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: #000000;
 }
 
-.clothing-item-create-page__error {
-  color: #b00020;
+.archive-form input::placeholder,
+.archive-form textarea::placeholder {
+  color: rgba(0, 0, 0, 0.32);
 }
 
-.wardrobe-card {
+.archive-form select {
+  appearance: none;
   cursor: pointer;
 }
 
-.wardrobe-card:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
+.archive-form textarea {
+  resize: vertical;
+  min-height: 96px;
+}
+
+.archive-form input:focus,
+.archive-form select:focus,
+.archive-form textarea:focus {
+  color: #000000;
+}
+
+.archive-form__field:focus-within {
+  border-bottom-color: rgba(0, 0, 0, 0.32);
+}
+
+.archive-form__error {
+  margin: 0.45rem 0 0;
+  font-size: 0.72rem;
+  color: var(--color-danger);
+}
+
+.archive-form__checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 1.15rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+}
+
+.archive-form__checkbox input {
+  width: 14px;
+  height: 14px;
+  accent-color: #000000;
+}
+
+.archive-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 1.5rem;
+}
+
+.archive-form__submit {
+  min-width: 180px;
+  border: 1px solid rgba(0, 0, 0, 0.85);
+  background: transparent;
+  color: #000000;
+  padding: 0.85rem 1.25rem;
+  cursor: pointer;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.archive-form__submit:hover {
+  background: #000000;
+  color: #ffffff;
+}
+
+@media (max-width: 760px) {
+  .archive-form__field {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+  .archive-form__actions {
+    justify-content: stretch;
+  }
+
+  .archive-form__submit {
+    width: 100%;
+  }
 }

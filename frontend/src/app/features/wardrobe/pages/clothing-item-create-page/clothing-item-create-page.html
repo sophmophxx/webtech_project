@@ -1,22 +1,23 @@
-<section class="clothing-item-create-page">
-  <a mat-button routerLink="/">
-    <mat-icon>arrow_back</mat-icon>
-    Zurück zur Übersicht
-  </a>
+<section class="editor-page">
+  <header class="editor-page__topbar">
+    <a class="editor-page__back-link" routerLink="/">← Back to archive</a>
 
-  <header class="clothing-item-create-page__header">
-    <p class="clothing-item-create-page__eyebrow">Wardrobe Archive</p>
-    <h1>Neues Kleidungsstück</h1>
+    <a class="editor-page__brand" routerLink="/">Wardrobe Archive</a>
+
+    <span></span>
   </header>
 
-  @if (errorMessage()) {
-    <p class="clothing-item-create-page__error">
-      {{ errorMessage() }}
-    </p>
-  }
+  <main class="editor-page__content">
+    <p class="editor-page__eyebrow">New entry</p>
+    <h1>Add new item</h1>
+    <p class="editor-page__description">Add a new piece to your personal wardrobe archive.</p>
 
-  <app-clothing-item-form
-    submitButtonLabel="Kleidungsstück anlegen"
-    (formSubmit)="createItem($event)"
-  />
+    @if (errorMessage()) {
+      <p class="editor-page__error">
+        {{ errorMessage() }}
+      </p>
+    }
+
+    <app-clothing-item-form submitButtonLabel="Add item" (formSubmit)="createItem($event)" />
+  </main>
 </section>

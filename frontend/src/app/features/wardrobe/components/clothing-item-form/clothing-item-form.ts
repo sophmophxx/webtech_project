@@ -1,24 +1,12 @@
 import { Component, Input, OnChanges, SimpleChanges, inject, output } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
 
 import { CreateClothingItemRequest } from '../../../../core/services/clothing-item.service';
 import { ClothingItem, ClothingItemCategory } from '../../../../shared/models/clothing-item.model';
 
 @Component({
   selector: 'app-clothing-item-form',
-  imports: [
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-  ],
+  imports: [ReactiveFormsModule],
   templateUrl: './clothing-item-form.html',
   styleUrl: './clothing-item-form.scss',
 })
@@ -26,7 +14,7 @@ export class ClothingItemForm implements OnChanges {
   private readonly formBuilder = inject(NonNullableFormBuilder);
 
   @Input() initialItem: ClothingItem | null = null;
-  @Input() submitButtonLabel = 'Kleidungsstück speichern';
+  @Input() submitButtonLabel = 'Save item';
 
   readonly formSubmit = output<CreateClothingItemRequest>();
 
@@ -73,10 +61,10 @@ export class ClothingItemForm implements OnChanges {
       return;
     }
 
-    this.formSubmit.emit(this.buildCreatePayload());
+    this.formSubmit.emit(this.buildPayload());
   }
 
-  private buildCreatePayload(): CreateClothingItemRequest {
+  private buildPayload(): CreateClothingItemRequest {
     const formValue = this.itemForm.getRawValue();
 
     return {
