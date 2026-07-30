@@ -8,3 +8,30 @@ img {
   object-fit: contain;
   background: white;
 }
+
+.wardrobe-card {
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+  border: 1px solid transparent;
+}
+
+.wardrobe-card img {
+  transition: filter 180ms ease;
+}
+
+.wardrobe-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.wardrobe-card:hover img {
+  filter: brightness(1.05) contrast(1.02);
+}
+
+.wardrobe-card:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
