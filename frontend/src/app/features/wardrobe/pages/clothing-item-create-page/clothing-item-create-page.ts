@@ -1,7 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 
 import {
   ClothingItemService,
@@ -11,7 +9,7 @@ import { ClothingItemForm } from '../../components/clothing-item-form/clothing-i
 
 @Component({
   selector: 'app-clothing-item-create-page',
-  imports: [RouterLink, MatButtonModule, MatIconModule, ClothingItemForm],
+  imports: [RouterLink, ClothingItemForm],
   templateUrl: './clothing-item-create-page.html',
   styleUrl: './clothing-item-create-page.scss',
 })

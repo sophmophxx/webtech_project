@@ -1,42 +1,190 @@
-.clothing-item-detail-page {
-  padding: 2rem;
-  max-width: 720px;
+.detail-page {
+  min-height: 100vh;
+  background: #ffffff;
 }
 
-.clothing-item-detail-page__header {
-  margin: 1.5rem 0 2rem;
+.detail-page__topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: 56px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 clamp(1.5rem, 2vw, 2.25rem);
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-.clothing-item-detail-page__eyebrow {
+.detail-page__back-link,
+.detail-page__edit-link {
+  font-size: 0.76rem;
+  color: #000000;
+  text-decoration: none;
+}
+
+.detail-page__back-link:hover,
+.detail-page__edit-link:hover {
+  opacity: 0.55;
+}
+
+.detail-page__brand {
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1rem, 1.35vw, 1.35rem);
+  font-weight: 500;
+  color: #000000;
+  text-decoration: none;
+}
+
+.detail-page__edit-link {
+  justify-self: end;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 0.16rem;
+}
+
+.detail-page__content {
+  min-height: calc(100vh - 56px);
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(360px, 0.75fr);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.detail-page__media {
+  display: grid;
+  place-items: center;
+  min-height: 640px;
+  padding: clamp(3rem, 7vw, 7rem);
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.detail-page__media img {
+  width: min(520px, 100%);
+  max-height: 620px;
+  object-fit: contain;
+}
+
+.detail-page__info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(2rem, 5vw, 5rem);
+}
+
+.detail-page__eyebrow {
+  margin: 0 0 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.64rem;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.48);
+}
+
+.detail-page h1 {
   margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(2.4rem, 4.2vw, 4.4rem);
+  line-height: 1;
+  font-weight: 500;
+}
+
+.detail-page__meta {
+  margin: 3rem 0 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.detail-page__meta div {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.detail-page__meta dt,
+.detail-page__meta dd {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.detail-page__meta dt {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.62rem;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.48);
+}
+
+.detail-page__meta dd {
+  color: rgba(0, 0, 0, 0.72);
+}
+
+.detail-page__primary-action {
+  align-self: flex-start;
+  margin-top: 2rem;
+  border: 1px solid rgba(0, 0, 0, 0.85);
+  padding: 0.85rem 1.4rem;
+  color: #000000;
+  text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  font-size: 0.75rem;
-  opacity: 0.7;
+  font-size: 0.76rem;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
 }
 
-.clothing-item-detail-page h1 {
-  margin: 0.25rem 0 0;
+.detail-page__primary-action:hover {
+  background: #000000;
+  color: #ffffff;
 }
 
-.clothing-item-detail-page__state {
-  min-height: 240px;
+.detail-page__state {
+  min-height: calc(100vh - 56px);
   display: grid;
   place-items: center;
   text-align: center;
-  gap: 1rem;
+  color: rgba(0, 0, 0, 0.52);
 }
 
-.clothing-item-detail-page__state--error {
-  color: #b00020;
+.detail-page__state--error {
+  color: var(--color-danger);
 }
 
-.clothing-item-detail-card {
-  overflow: hidden;
+@media (max-width: 900px) {
+  .detail-page__content {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-page__media {
+    min-height: 420px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .detail-page__info {
+    justify-content: flex-start;
+  }
 }
 
-img {
-  max-height: 420px;
-  object-fit: contain;
-  background: white;
+@media (max-width: 760px) {
+  .detail-page__topbar {
+    grid-template-columns: 1fr;
+    height: auto;
+    gap: 0.75rem;
+    padding-block: 1rem;
+    text-align: center;
+  }
+
+  .detail-page__edit-link {
+    justify-self: center;
+  }
+
+  .detail-page__meta div {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
 }
