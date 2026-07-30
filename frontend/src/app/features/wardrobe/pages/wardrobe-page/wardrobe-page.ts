@@ -6,10 +6,11 @@ import { ClothingItemService } from '../../../../core/services/clothing-item.ser
 import { ClothingItem } from '../../../../shared/models/clothing-item.model';
 import { ClothingItemCard } from '../../components/clothing-item-card/clothing-item-card';
 import { MatButtonModule } from '@angular/material/button';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-wardrobe-page',
-  imports: [MatButtonModule, MatIconModule, MatProgressSpinnerModule, ClothingItemCard],
+  imports: [RouterLink, MatButtonModule, MatIconModule, MatProgressSpinnerModule, ClothingItemCard],
   templateUrl: './wardrobe-page.html',
   styleUrl: './wardrobe-page.scss',
 })
