@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { vi } from 'vitest';
 
 import { ClothingItemCard } from './clothing-item-card';
 import { ClothingItem } from '../../../../shared/models/clothing-item.model';
@@ -21,6 +23,7 @@ describe('ClothingItemCard', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ClothingItemCard],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ClothingItemCard);
@@ -60,7 +63,10 @@ describe('ClothingItemCard', () => {
   it('should emit item id when delete button is clicked', () => {
     const emitSpy = vi.spyOn(component.deleteItem, 'emit');
 
-    const button = fixture.nativeElement.querySelector('button') as HTMLButtonElement;
+    const button = fixture.nativeElement.querySelector(
+      'button[aria-label="Kleidungsstück löschen"]',
+    ) as HTMLButtonElement;
+
     button.click();
 
     expect(emitSpy).toHaveBeenCalledWith('1');

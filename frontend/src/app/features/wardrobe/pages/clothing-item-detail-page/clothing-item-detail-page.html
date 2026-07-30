@@ -1,0 +1,53 @@
+<section class="clothing-item-detail-page">
+  <a mat-button routerLink="/">
+    <mat-icon>arrow_back</mat-icon>
+    Zurück zur Übersicht
+  </a>
+
+  @if (isLoading()) {
+    <div class="clothing-item-detail-page__state">
+      <mat-spinner diameter="40" />
+      <p>Lade Kleidungsstück...</p>
+    </div>
+  } @else if (errorMessage()) {
+    <div class="clothing-item-detail-page__state clothing-item-detail-page__state--error">
+      <mat-icon>error</mat-icon>
+      <p>{{ errorMessage() }}</p>
+    </div>
+  } @else if (item(); as item) {
+    <header class="clothing-item-detail-page__header">
+      <p class="clothing-item-detail-page__eyebrow">Wardrobe Archive</p>
+      <h1>{{ item.name }}</h1>
+      <p>{{ item.category }}</p>
+    </header>
+
+    <mat-card class="clothing-item-detail-card">
+      @if (item.imageUrl) {
+        <img mat-card-image [src]="item.imageUrl" [alt]="item.name" />
+      }
+
+      <mat-card-content>
+        @if (item.brand) {
+          <p><strong>Brand:</strong> {{ item.brand }}</p>
+        }
+
+        @if (item.color) {
+          <p><strong>Farbe:</strong> {{ item.color }}</p>
+        }
+
+        @if (item.size) {
+          <p><strong>Größe:</strong> {{ item.size }}</p>
+        }
+
+        @if (item.notes) {
+          <p><strong>Notizen:</strong> {{ item.notes }}</p>
+        }
+
+        <p>
+          <strong>Favorit:</strong>
+          {{ item.favorite ? 'Ja' : 'Nein' }}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  }
+</section>

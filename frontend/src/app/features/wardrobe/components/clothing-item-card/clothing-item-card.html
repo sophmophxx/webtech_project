@@ -23,7 +23,18 @@
   </mat-card-content>
 
   <mat-card-actions align="end">
-    <button mat-button color="warn" type="button" (click)="onDeleteClick()">
+    <a mat-button [routerLink]="['/items', item._id]">
+      <mat-icon>visibility</mat-icon>
+      Details
+    </a>
+
+    <button
+      mat-button
+      color="warn"
+      type="button"
+      aria-label="Kleidungsstück löschen"
+      (click)="onDeleteClick()"
+    >
       <mat-icon>delete</mat-icon>
       Löschen
     </button>
