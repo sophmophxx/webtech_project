@@ -10,9 +10,18 @@ requiredEnvVars.forEach((key) => {
     }
 });
 
+function parseClientUrls(value) {
+    return value
+        .split(",")
+        .map((url) => url.trim())
+        .filter(Boolean);
+}
+
 export const env = {
     port: process.env.PORT || 3000,
     mongoUri: process.env.MONGO_URI,
-    clientUrl: process.env.CLIENT_URL || "http://localhost:4200",
+    clientUrls: parseClientUrls(
+        process.env.CLIENT_URL || "http://localhost:4200"
+    ),
     nodeEnv: process.env.NODE_ENV || "development",
 };
