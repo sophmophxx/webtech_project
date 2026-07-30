@@ -1,4 +1,10 @@
-<mat-card class="wardrobe-card">
+<mat-card
+  class="wardrobe-card"
+  role="link"
+  tabindex="0"
+  (click)="openDetails()"
+  (keydown)="onCardKeyDown($event)"
+>
   @if (item.imageUrl) {
     <img mat-card-image [src]="item.imageUrl" [alt]="item.name" />
   }
@@ -23,17 +29,12 @@
   </mat-card-content>
 
   <mat-card-actions align="end">
-    <a mat-button [routerLink]="['/items', item._id]">
-      <mat-icon>visibility</mat-icon>
-      Details
-    </a>
-
     <button
       mat-button
       color="warn"
       type="button"
       aria-label="Kleidungsstück löschen"
-      (click)="onDeleteClick()"
+      (click)="onDeleteClick($event)"
     >
       <mat-icon>delete</mat-icon>
       Löschen

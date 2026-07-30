@@ -22,3 +22,12 @@
 .clothing-item-create-page__error {
   color: #b00020;
 }
+
+.wardrobe-card {
+  cursor: pointer;
+}
+
+.wardrobe-card:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
