@@ -1,11 +1,22 @@
 <section class="wardrobe-page">
-  <header class="wardrobe-page__header">
-    <div>
-      <p class="wardrobe-page__eyebrow">Wardrobe Archive</p>
-      <h1>Deine Kleidungsstücke</h1>
-      <a mat-raised-button color="primary" routerLink="/items/new"> Neues Kleidungsstück </a>
-    </div>
+  <header class="wardrobe-page__topbar">
+    <a class="wardrobe-page__nav-link" routerLink="/"> Archive </a>
+
+    <a class="wardrobe-page__brand" routerLink="/"> Wardrobe Archive </a>
+
+    <nav class="wardrobe-page__actions" aria-label="Seitennavigation">
+      <a class="wardrobe-page__new-link" routerLink="/items/new"> Add new item </a>
+    </nav>
   </header>
+
+  <section class="wardrobe-page__intro">
+    <p class="wardrobe-page__eyebrow">Personal Collection</p>
+    <h1>Your Wardrobe</h1>
+    <p>
+      A refined overview of your personal pieces — collected, editable, and thoughtfully curated.
+    </p>
+  </section>
+
   @if (isLoading()) {
     <div class="wardrobe-page__state">
       <mat-spinner diameter="40" />

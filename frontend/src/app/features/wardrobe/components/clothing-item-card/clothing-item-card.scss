@@ -1,37 +1,133 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
 .wardrobe-card {
   height: 100%;
-  overflow: hidden;
-}
-
-img {
-  height: 220px;
-  object-fit: contain;
-  background: white;
-}
-
-.wardrobe-card {
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
   cursor: pointer;
+  border-radius: 0;
+  border: 0;
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: none;
+  background: #ffffff;
+}
+
+.wardrobe-card__media {
+  height: 340px;
+  display: grid;
+  place-items: center;
+  padding: 2.5rem;
+  background: #ffffff;
   overflow: hidden;
+}
+
+.wardrobe-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
   transition:
-    box-shadow 180ms ease,
-    border-color 180ms ease;
-  border: 1px solid transparent;
+    opacity 180ms ease,
+    filter 180ms ease;
 }
 
-.wardrobe-card img {
-  transition: filter 180ms ease;
+.wardrobe-card:hover .wardrobe-card__media img {
+  opacity: 0.86;
+  filter: saturate(0.92);
 }
 
-.wardrobe-card:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  border-color: rgba(0, 0, 0, 0.08);
+.wardrobe-card__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem 1.35rem 1.1rem;
+  background: #ffffff;
 }
 
-.wardrobe-card:hover img {
-  filter: brightness(1.05) contrast(1.02);
+.wardrobe-card__category {
+  margin: 0 0 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.62rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.46);
+}
+
+.wardrobe-card h2 {
+  margin: 0;
+  max-width: 90%;
+  font-size: 0.95rem;
+  line-height: 1.25;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.wardrobe-card__meta {
+  margin: 1rem 0 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.wardrobe-card__meta div {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.wardrobe-card__meta dt,
+.wardrobe-card__meta dd {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.wardrobe-card__meta dt {
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.72);
+}
+
+.wardrobe-card__meta dd {
+  color: rgba(0, 0, 0, 0.46);
+}
+
+.wardrobe-card__delete {
+  margin-top: auto;
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.65);
+  cursor: pointer;
+  font-size: 0.78rem;
+}
+
+.wardrobe-card__delete:hover {
+  color: #000000;
+}
+
+.wardrobe-card__delete mat-icon {
+  width: 15px;
+  height: 15px;
+  font-size: 15px;
 }
 
 .wardrobe-card:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 3px;
+  outline: 1px solid #000000;
+  outline-offset: -1px;
+}
+
+@media (max-width: 760px) {
+  .wardrobe-card {
+    min-height: auto;
+  }
+
+  .wardrobe-card__media {
+    height: 300px;
+  }
 }
