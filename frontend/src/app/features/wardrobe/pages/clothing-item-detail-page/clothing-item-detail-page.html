@@ -1,57 +1,77 @@
-<section class="clothing-item-detail-page">
-  <a mat-button routerLink="/">
-    <mat-icon>arrow_back</mat-icon>
-    Zurück zur Übersicht
-  </a>
+<section class="detail-page">
+  <header class="detail-page__topbar">
+    <a class="detail-page__back-link" routerLink="/">← Back to archive</a>
+
+    <a class="detail-page__brand" routerLink="/">Wardrobe Archive</a>
+
+    @if (item(); as item) {
+      <a class="detail-page__edit-link" [routerLink]="['/items', item._id, 'edit']"> Edit item </a>
+    } @else {
+      <span></span>
+    }
+  </header>
 
   @if (isLoading()) {
-    <div class="clothing-item-detail-page__state">
-      <mat-spinner diameter="40" />
-      <p>Lade Kleidungsstück...</p>
+    <div class="detail-page__state">
+      <mat-spinner diameter="36" />
+      <p>Loading item...</p>
     </div>
   } @else if (errorMessage()) {
-    <div class="clothing-item-detail-page__state clothing-item-detail-page__state--error">
-      <mat-icon>error</mat-icon>
+    <div class="detail-page__state detail-page__state--error">
       <p>{{ errorMessage() }}</p>
     </div>
   } @else if (item(); as item) {
-    <header class="clothing-item-detail-page__header">
-      <p class="clothing-item-detail-page__eyebrow">Wardrobe Archive</p>
-      <h1>{{ item.name }}</h1>
-      <p>{{ item.category }}</p>
-    </header>
-    <a mat-raised-button color="primary" [routerLink]="['/items', item._id, 'edit']">
-      <mat-icon>edit</mat-icon>
-      Bearbeiten
-    </a>
-
-    <mat-card class="clothing-item-detail-card">
-      @if (item.imageUrl) {
-        <img mat-card-image [src]="item.imageUrl" [alt]="item.name" />
-      }
-
-      <mat-card-content>
-        @if (item.brand) {
-          <p><strong>Brand:</strong> {{ item.brand }}</p>
+    <main class="detail-page__content">
+      <section class="detail-page__media" aria-label="Item image">
+        @if (item.imageUrl) {
+          <img [src]="item.imageUrl" [alt]="item.name" />
         }
+      </section>
 
-        @if (item.color) {
-          <p><strong>Farbe:</strong> {{ item.color }}</p>
-        }
+      <section class="detail-page__info">
+        <p class="detail-page__eyebrow">{{ item.category }}</p>
 
-        @if (item.size) {
-          <p><strong>Größe:</strong> {{ item.size }}</p>
-        }
+        <h1>{{ item.name }}</h1>
 
-        @if (item.notes) {
-          <p><strong>Notizen:</strong> {{ item.notes }}</p>
-        }
+        <dl class="detail-page__meta">
+          @if (item.brand) {
+            <div>
+              <dt>Brand</dt>
+              <dd>{{ item.brand }}</dd>
+            </div>
+          }
 
-        <p>
-          <strong>Favorit:</strong>
-          {{ item.favorite ? 'Ja' : 'Nein' }}
-        </p>
-      </mat-card-content>
-    </mat-card>
+          @if (item.color) {
+            <div>
+              <dt>Color</dt>
+              <dd>{{ item.color }}</dd>
+            </div>
+          }
+
+          @if (item.size) {
+            <div>
+              <dt>Size</dt>
+              <dd>{{ item.size }}</dd>
+            </div>
+          }
+
+          @if (item.notes) {
+            <div>
+              <dt>Notes</dt>
+              <dd>{{ item.notes }}</dd>
+            </div>
+          }
+
+          <div>
+            <dt>Favorite</dt>
+            <dd>{{ item.favorite ? 'Yes' : 'No' }}</dd>
+          </div>
+        </dl>
+
+        <a class="detail-page__primary-action" [routerLink]="['/items', item._id, 'edit']">
+          Edit item
+        </a>
+      </section>
+    </main>
   }
 </section>

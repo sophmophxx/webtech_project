@@ -1,8 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { ClothingItemService } from '../../../../core/services/clothing-item.service';
@@ -10,7 +7,7 @@ import { ClothingItem } from '../../../../shared/models/clothing-item.model';
 
 @Component({
   selector: 'app-clothing-item-detail-page',
-  imports: [RouterLink, MatButtonModule, MatCardModule, MatIconModule, MatProgressSpinnerModule],
+  imports: [RouterLink, MatProgressSpinnerModule],
   templateUrl: './clothing-item-detail-page.html',
   styleUrl: './clothing-item-detail-page.scss',
 })
@@ -26,7 +23,7 @@ export class ClothingItemDetailPage implements OnInit {
     const itemId = this.route.snapshot.paramMap.get('id');
 
     if (!itemId) {
-      this.errorMessage.set('Keine Item-ID gefunden.');
+      this.errorMessage.set('No item id found.');
       this.isLoading.set(false);
       return;
     }
@@ -41,7 +38,7 @@ export class ClothingItemDetailPage implements OnInit {
         this.isLoading.set(false);
       },
       error: () => {
-        this.errorMessage.set('Kleidungsstück konnte nicht geladen werden.');
+        this.errorMessage.set('Item could not be loaded.');
         this.isLoading.set(false);
       },
     });
