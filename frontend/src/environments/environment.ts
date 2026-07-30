@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://REPLACE_WITH_BACKEND_URL/api/v1',
+  apiBaseUrl: 'https://wardrobe-backend-ojyw.onrender.com/api/v1',
 };
