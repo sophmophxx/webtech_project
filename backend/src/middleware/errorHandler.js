@@ -1,6 +1,13 @@
 import { env } from "../config/env.js";
 import { AppError } from "../utils/AppError.js";
 
+/**
+ * Converts known Mongoose errors into consistent API error responses.
+ * Returns null if the error is not handled here.
+ *
+ * @param {Error} error - The error thrown by Mongoose.
+ * @returns {{ statusCode: number, message: string, errors?: string[] } | null}
+ */
 function handleMongooseError(error) {
     if (error.name === "ValidationError") {
         return {
@@ -26,10 +33,19 @@ function handleMongooseError(error) {
     return null;
 }
 
+/**
+ * Handles requests to unknown routes by forwarding a 404 AppError
+ * to the central error handler.
+ */
 export function notFoundHandler(req, res, next) {
     next(new AppError(`Route nicht gefunden: ${req.originalUrl}`, 404));
 }
 
+/**
+ * Central Express error handler.
+ * Normalizes application, validation, and database errors into JSON responses.
+ * In production, unexpected errors are hidden behind a generic message.
+ */
 export function errorHandler(error, req, res, _next) {
     const mongooseError = handleMongooseError(error);
 

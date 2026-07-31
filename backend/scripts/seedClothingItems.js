@@ -1,3 +1,9 @@
+/**
+ * Seeds the configured development database with sample clothing items.
+ * If --reset is passed, existing clothing items are deleted before inserting the samples.
+ * Seeding is disabled in production to prevent accidental data loss.
+ */
+
 import mongoose from "mongoose";
 import { connectDB } from "../src/config/db.js";
 import { env } from "../src/config/env.js";
@@ -76,6 +82,9 @@ const sampleItems = [
     },
 ];
 
+/**
+ * Runs the seeding process and closes the MongoDB connection afterwards.
+ */
 async function seedClothingItems() {
     const shouldReset = process.argv.includes("--reset");
 

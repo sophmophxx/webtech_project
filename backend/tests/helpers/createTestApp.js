@@ -1,3 +1,8 @@
+/**
+ * Creates an isolated Express app instance for integration tests.
+ * This allows routes and middleware to be tested without starting the HTTP server.
+ */
+
 export async function createTestApp() {
     process.env.NODE_ENV = "test";
     process.env.CLIENT_URL = "http://localhost:4200";
