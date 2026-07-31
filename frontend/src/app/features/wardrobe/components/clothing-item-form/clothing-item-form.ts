@@ -40,6 +40,10 @@ export class ClothingItemForm implements OnChanges {
     favorite: [false],
   });
 
+  /**
+   * Prefills the form when an existing item is passed in.
+   * This allows the same form component to be reused for creating and editing items.
+   */
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['initialItem'] && this.initialItem) {
       this.itemForm.reset({
@@ -55,6 +59,9 @@ export class ClothingItemForm implements OnChanges {
     }
   }
 
+  /**
+   * Validates the form and emits a cleaned payload to the parent component.
+   */
   submitForm(): void {
     if (this.itemForm.invalid) {
       this.itemForm.markAllAsTouched();
@@ -64,6 +71,10 @@ export class ClothingItemForm implements OnChanges {
     this.formSubmit.emit(this.buildPayload());
   }
 
+  /**
+   * Builds the request payload from the form values.
+   * Empty optional fields are removed so they are not sent to the backend.
+   */
   private buildPayload(): CreateClothingItemRequest {
     const formValue = this.itemForm.getRawValue();
 

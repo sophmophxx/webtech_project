@@ -19,6 +19,10 @@ export class ClothingItemDetailPage implements OnInit {
   readonly isLoading = signal(true);
   readonly errorMessage = signal<string | null>(null);
 
+  /**
+   * Reads the item id from the route and loads the matching clothing item.
+   * If no id is available, an error state is shown instead.
+   */
   ngOnInit(): void {
     const itemId = this.route.snapshot.paramMap.get('id');
 
@@ -31,6 +35,9 @@ export class ClothingItemDetailPage implements OnInit {
     this.loadItem(itemId);
   }
 
+  /**
+   * Loads a single clothing item from the API and updates the page state.
+   */
   private loadItem(id: string): void {
     this.clothingItemService.getItemById(id).subscribe({
       next: (item) => {

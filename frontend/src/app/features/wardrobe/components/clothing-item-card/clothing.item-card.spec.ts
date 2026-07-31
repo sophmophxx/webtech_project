@@ -64,8 +64,10 @@ describe('ClothingItemCard', () => {
     const emitSpy = vi.spyOn(component.deleteItem, 'emit');
 
     const button = fixture.nativeElement.querySelector(
-      'button[aria-label="Kleidungsstück löschen"]',
+      '.wardrobe-card__delete',
     ) as HTMLButtonElement;
+
+    expect(button).toBeTruthy();
 
     button.click();
 
