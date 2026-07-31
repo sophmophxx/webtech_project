@@ -1,0 +1,111 @@
+<section class="outfit-create-page">
+  <header class="outfit-create-page__topbar">
+    <nav class="outfit-create-page__nav">
+      <a routerLink="/">Archive</a>
+      <a routerLink="/outfits">Outfits</a>
+    </nav>
+
+    <a class="outfit-create-page__brand" routerLink="/">Wardrobe Archive</a>
+
+    <span></span>
+  </header>
+
+  <main class="outfit-create-page__content">
+    <section class="outfit-create-page__intro">
+      <p class="outfit-create-page__eyebrow">New outfit</p>
+      <h1>Create Outfit</h1>
+      <p>Select pieces from your archive and combine them into a curated look.</p>
+    </section>
+
+    @if (isLoading()) {
+      <div class="outfit-create-page__state">
+        <mat-spinner diameter="40" />
+        <p>Loading pieces...</p>
+      </div>
+    } @else if (errorMessage()) {
+      <div class="outfit-create-page__state outfit-create-page__state--error">
+        <p>{{ errorMessage() }}</p>
+      </div>
+    } @else {
+      <form class="outfit-builder" [formGroup]="outfitForm" (ngSubmit)="createOutfit()">
+        <section class="outfit-builder__details">
+          <div class="outfit-builder__field">
+            <label for="name">Name</label>
+
+            <div>
+              <input id="name" type="text" formControlName="name" placeholder="name this outfit" />
+
+              @if (
+                outfitForm.controls.name.hasError('required') && outfitForm.controls.name.touched
+              ) {
+                <p class="outfit-builder__error">Name is required.</p>
+              }
+            </div>
+          </div>
+
+          <div class="outfit-builder__field outfit-builder__field--textarea">
+            <label for="notes">Notes</label>
+            <textarea
+              id="notes"
+              formControlName="notes"
+              rows="3"
+              placeholder="add styling notes"
+            ></textarea>
+          </div>
+
+          <label class="outfit-builder__checkbox">
+            <input type="checkbox" formControlName="favorite" />
+            <span>Mark as favorite</span>
+          </label>
+        </section>
+
+        <section class="outfit-builder__selection">
+          <div class="outfit-builder__selection-header">
+            <p>Select pieces</p>
+            <span>{{ selectedItemIds().size }} selected</span>
+          </div>
+
+          @if (selectionError()) {
+            <p class="outfit-builder__error outfit-builder__error--selection">
+              {{ selectionError() }}
+            </p>
+          }
+
+          <div class="outfit-builder__grid">
+            @for (item of items(); track item._id) {
+              <button
+                class="outfit-piece"
+                type="button"
+                [class.outfit-piece--selected]="isSelected(item._id)"
+                (click)="toggleItemSelection(item._id)"
+              >
+                <span class="outfit-piece__media">
+                  @if (item.imageUrl) {
+                    <img [src]="item.imageUrl" [alt]="item.name" />
+                  }
+                </span>
+
+                <span class="outfit-piece__body">
+                  <span class="outfit-piece__category">{{ item.category }}</span>
+                  <span class="outfit-piece__name">{{ item.name }}</span>
+
+                  @if (item.brand) {
+                    <span class="outfit-piece__meta">{{ item.brand }}</span>
+                  }
+                </span>
+              </button>
+            }
+          </div>
+        </section>
+
+        <div class="outfit-builder__actions">
+          <a routerLink="/outfits">Cancel</a>
+
+          <button class="outfit-builder__submit" type="submit" [disabled]="isSubmitting()">
+            {{ isSubmitting() ? 'Saving...' : 'Save outfit' }}
+          </button>
+        </div>
+      </form>
+    }
+  </main>
+</section>
