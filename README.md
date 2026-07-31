@@ -52,6 +52,19 @@ The frontend communicates with the backend through the versioned
 `/api/v1/items` endpoints. The backend validates incoming data before reading from
 or writing to MongoDB.
 
+## Live demo
+
+- Frontend: https://webtech-project-one.vercel.app
+- Backend health check: https://wardrobe-backend-ojyw.onrender.com/api/v1/health
+
+## Deployment
+
+The frontend is deployed on Vercel and the backend is deployed as a Render Web
+Service. MongoDB Atlas is used as the hosted database.
+
+Both Vercel and Render are connected to the GitHub repository and automatically
+deploy changes from the `main` branch.
+
 ## Project structure
 
 ```text
