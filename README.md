@@ -28,6 +28,20 @@ This repository was created as a university Web Technologies project.
 - Seed script with sample wardrobe data
 - Automated frontend and backend quality checks with GitHub Actions
 
+## Screenshots
+
+### Wardrobe overview
+
+![Wardrobe overview](./docs/screenshots/overview.png)
+
+### Item detail
+
+![Item detail](./docs/screenshots/detail.png)
+
+### Create item
+
+![Create item form](./docs/screenshots/create-item.png)
+
 ## Tech stack
 
 | Area | Technologies |
