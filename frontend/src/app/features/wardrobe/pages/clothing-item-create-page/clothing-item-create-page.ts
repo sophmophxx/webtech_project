@@ -20,6 +20,10 @@ export class ClothingItemCreatePage {
   readonly isSubmitting = signal(false);
   readonly errorMessage = signal<string | null>(null);
 
+  /**
+   * Creates a new clothing item through the API.
+   * On success, the user is redirected back to the wardrobe overview.
+   */
   createItem(payload: CreateClothingItemRequest): void {
     this.isSubmitting.set(true);
     this.errorMessage.set(null);
@@ -29,7 +33,7 @@ export class ClothingItemCreatePage {
         void this.router.navigate(['/']);
       },
       error: () => {
-        this.errorMessage.set('Kleidungsstück konnte nicht angelegt werden.');
+        this.errorMessage.set('Item could not be created.');
         this.isSubmitting.set(false);
       },
     });

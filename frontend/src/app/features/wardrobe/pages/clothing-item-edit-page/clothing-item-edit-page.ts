@@ -27,11 +27,15 @@ export class ClothingItemEditPage implements OnInit {
   readonly isSubmitting = signal(false);
   readonly errorMessage = signal<string | null>(null);
 
+  /**
+   * Reads the item id from the route and loads the existing item for editing.
+   * If no id is available, an error state is shown instead.
+   */
   ngOnInit(): void {
     const itemId = this.route.snapshot.paramMap.get('id');
 
     if (!itemId) {
-      this.errorMessage.set('Keine Item-ID gefunden.');
+      this.errorMessage.set('No item id found.');
       this.isLoading.set(false);
       return;
     }
@@ -39,6 +43,10 @@ export class ClothingItemEditPage implements OnInit {
     this.loadItem(itemId);
   }
 
+  /**
+   * Updates the currently loaded clothing item through the API.
+   * On success, the user is redirected to the updated item detail page.
+   */
   updateItem(payload: UpdateClothingItemRequest): void {
     const currentItem = this.item();
 
@@ -54,12 +62,15 @@ export class ClothingItemEditPage implements OnInit {
         void this.router.navigate(['/items', updatedItem._id]);
       },
       error: () => {
-        this.errorMessage.set('Kleidungsstück konnte nicht aktualisiert werden.');
+        this.errorMessage.set('Item could not be updated.');
         this.isSubmitting.set(false);
       },
     });
   }
 
+  /**
+   * Loads the selected clothing item and stores it as page state.
+   */
   private loadItem(id: string): void {
     this.clothingItemService.getItemById(id).subscribe({
       next: (item) => {
@@ -67,7 +78,7 @@ export class ClothingItemEditPage implements OnInit {
         this.isLoading.set(false);
       },
       error: () => {
-        this.errorMessage.set('Kleidungsstück konnte nicht geladen werden.');
+        this.errorMessage.set('Item could not be loaded.');
         this.isLoading.set(false);
       },
     });
