@@ -6,6 +6,7 @@ import { env } from "./config/env.js";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler.js";
 import clothingItemRoutes from "./routes/clothingItemRoutes.js";
 import healthRoutes from "./routes/healthRoutes.js";
+import outfitRoutes from "./routes/outfitRoutes.js";
 
 const app = express();
 
@@ -46,6 +47,7 @@ app.get("/", (_req, res) => {
 // Versioned API routes.
 app.use("/api/v1/health", healthRoutes);
 app.use("/api/v1/items", clothingItemRoutes);
+app.use("/api/v1/outfits", outfitRoutes);
 
 // Fallback and centralized error handling.
 app.use(notFoundHandler);
