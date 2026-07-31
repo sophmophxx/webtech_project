@@ -10,6 +10,13 @@ requiredEnvVars.forEach((key) => {
     }
 });
 
+/**
+ * Converts a comma-separated list of client URLs into an array.
+ * This allows multiple frontend origins to be used for CORS configuration.
+ *
+ * @param {string} value - Comma-separated list of client URLs.
+ * @returns {string[]} Parsed and trimmed client URLs.
+ */
 function parseClientUrls(value) {
     return value
         .split(",")
@@ -17,6 +24,10 @@ function parseClientUrls(value) {
         .filter(Boolean);
 }
 
+/**
+ * Centralized environment configuration for the application.
+ * Provides default values for local development where appropriate.
+ */
 export const env = {
     port: process.env.PORT || 3000,
     mongoUri: process.env.MONGO_URI,

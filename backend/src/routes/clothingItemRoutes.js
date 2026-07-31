@@ -12,6 +12,10 @@ import {
     updateClothingItemSchema,
 } from "../validators/clothingItemValidator.js";
 
+/**
+ * Defines the REST endpoints for clothing item CRUD operations.
+ * Request bodies are validated before create and update operations reach the controller.
+ */
 const router = express.Router();
 
 router.get("/", getClothingItems);

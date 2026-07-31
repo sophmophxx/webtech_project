@@ -9,8 +9,10 @@ import healthRoutes from "./routes/healthRoutes.js";
 
 const app = express();
 
+// Adds common security-related HTTP headers.
 app.use(helmet());
 
+// Allows requests only from configured frontend origins.
 app.use(
     cors({
         origin(origin, callback) {
@@ -23,6 +25,7 @@ app.use(
     })
 );
 
+// Limits repeated requests to reduce abuse and accidental overload.
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     limit: 100,
@@ -32,15 +35,19 @@ const limiter = rateLimit({
 
 app.use(limiter);
 
+// Parses JSON request bodies and limits their size.
 app.use(express.json({ limit: "10kb" }));
 
-app.get("/", (req, res) => {
+// Basic root endpoint for manual checks in the browser.
+app.get("/", (_req, res) => {
     res.send("Backend läuft");
 });
 
+// Versioned API routes.
 app.use("/api/v1/health", healthRoutes);
 app.use("/api/v1/items", clothingItemRoutes);
 
+// Fallback and centralized error handling.
 app.use(notFoundHandler);
 app.use(errorHandler);
 

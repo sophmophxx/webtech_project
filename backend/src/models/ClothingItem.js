@@ -1,5 +1,9 @@
 import mongoose from "mongoose";
 
+/**
+ * Defines the MongoDB structure and validation rules for a clothing item.
+ * Mongoose also adds createdAt and updatedAt timestamps automatically.
+ */
 const clothingItemSchema = new mongoose.Schema(
     {
         name: {
