@@ -38,9 +38,46 @@
     <input id="size" type="text" formControlName="size" placeholder="add size" />
   </div>
 
-  <div class="archive-form__field">
-    <label for="imageUrl">Image path</label>
-    <input id="imageUrl" type="text" formControlName="imageUrl" placeholder="add image url" />
+  <div class="archive-form__field archive-form__field--upload">
+    <span class="archive-form__label">Image</span>
+
+    <div class="archive-form__upload">
+      <input
+        id="imageFile"
+        class="archive-form__file-input"
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        (change)="onImageSelected($event)"
+      />
+
+      <div class="archive-form__upload-row">
+        <label class="archive-form__upload-button" for="imageFile"> Choose image </label>
+
+        <span class="archive-form__upload-status">
+          {{ selectedImageName() || 'No image selected' }}
+        </span>
+      </div>
+
+      <p class="archive-form__upload-hint">JPG, PNG or WEBP · max. 5 MB</p>
+
+      <input
+        id="imageUrl"
+        class="archive-form__url-input"
+        type="text"
+        formControlName="imageUrl"
+        placeholder="or paste an image URL"
+      />
+
+      @if (imagePreviewUrl(); as previewUrl) {
+        <div class="archive-form__preview">
+          <img [src]="previewUrl" alt="Selected item preview" />
+        </div>
+      }
+
+      @if (imageUploadError()) {
+        <p class="archive-form__error">{{ imageUploadError() }}</p>
+      }
+    </div>
   </div>
 
   <div class="archive-form__field archive-form__field--textarea">
@@ -59,8 +96,8 @@
   </label>
 
   <div class="archive-form__actions">
-    <button class="archive-form__submit" type="submit">
-      {{ submitButtonLabel }}
+    <button class="archive-form__submit" type="submit" [disabled]="isUploading()">
+      {{ isUploading() ? 'Uploading image...' : submitButtonLabel }}
     </button>
   </div>
 </form>

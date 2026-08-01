@@ -7,6 +7,7 @@ import { errorHandler, notFoundHandler } from "./middleware/errorHandler.js";
 import clothingItemRoutes from "./routes/clothingItemRoutes.js";
 import healthRoutes from "./routes/healthRoutes.js";
 import outfitRoutes from "./routes/outfitRoutes.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
 
 const app = express();
 
@@ -48,6 +49,7 @@ app.get("/", (_req, res) => {
 app.use("/api/v1/health", healthRoutes);
 app.use("/api/v1/items", clothingItemRoutes);
 app.use("/api/v1/outfits", outfitRoutes);
+app.use("/api/v1/uploads", uploadRoutes);
 
 // Fallback and centralized error handling.
 app.use(notFoundHandler);

@@ -8,6 +8,8 @@
   border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
 
+/* Fields */
+
 .archive-form__field {
   display: grid;
   grid-template-columns: 180px 1fr;
@@ -17,7 +19,12 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-.archive-form__field label,
+.archive-form__field:focus-within {
+  border-bottom-color: rgba(0, 0, 0, 0.32);
+}
+
+.archive-form__field > label,
+.archive-form__label,
 .archive-form__checkbox span {
   text-transform: uppercase;
   letter-spacing: 0.16em;
@@ -25,6 +32,8 @@
   font-weight: 400;
   color: rgba(0, 0, 0, 0.48);
 }
+
+/* Inputs */
 
 .archive-form input,
 .archive-form select,
@@ -43,7 +52,8 @@
 
 .archive-form input::placeholder,
 .archive-form textarea::placeholder {
-  color: rgba(0, 0, 0, 0.32);
+  color: rgba(0, 0, 0, 0.34);
+  font-style: normal;
 }
 
 .archive-form select {
@@ -52,8 +62,8 @@
 }
 
 .archive-form textarea {
-  resize: vertical;
   min-height: 96px;
+  resize: vertical;
 }
 
 .archive-form input:focus,
@@ -62,15 +72,82 @@
   color: #000000;
 }
 
-.archive-form__field:focus-within {
-  border-bottom-color: rgba(0, 0, 0, 0.32);
-}
-
 .archive-form__error {
   margin: 0.45rem 0 0;
   font-size: 0.72rem;
   color: var(--color-danger);
 }
+
+/* Image Upload */
+
+.archive-form__upload {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.archive-form__file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.archive-form__upload-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 1.25rem;
+}
+
+.archive-form__upload-button {
+  width: fit-content;
+  cursor: pointer;
+  color: #000000;
+  font-size: 0.74rem;
+  line-height: 1.2;
+  text-decoration: none;
+  text-transform: none;
+  letter-spacing: 0;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 0.12rem;
+}
+
+.archive-form__upload-status {
+  color: rgba(0, 0, 0, 0.38);
+  font-size: 0.76rem;
+}
+
+.archive-form__upload-hint {
+  margin: -0.25rem 0 0;
+  color: rgba(0, 0, 0, 0.34);
+  font-size: 0.7rem;
+  line-height: 1.5;
+}
+
+.archive-form__url-input {
+  margin-top: 0.35rem;
+}
+
+.archive-form__preview {
+  width: 100%;
+  min-height: 240px;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.archive-form__preview img {
+  display: block;
+  width: 100%;
+  max-width: 220px;
+  max-height: 260px;
+  object-fit: contain;
+}
+
+/* Checkbox */
 
 .archive-form__checkbox {
   display: flex;
@@ -86,6 +163,8 @@
   height: 14px;
   accent-color: #000000;
 }
+
+/* Actions */
 
 .archive-form__actions {
   display: flex;
@@ -105,7 +184,8 @@
   text-transform: uppercase;
   transition:
     background-color 160ms ease,
-    color 160ms ease;
+    color 160ms ease,
+    opacity 160ms ease;
 }
 
 .archive-form__submit:hover {
@@ -113,10 +193,73 @@
   color: #ffffff;
 }
 
+.archive-form__submit:disabled {
+  cursor: wait;
+  opacity: 0.55;
+}
+
+.archive-form__submit:disabled:hover {
+  background: transparent;
+  color: #000000;
+}
+
 @media (max-width: 760px) {
   .archive-form__field {
     grid-template-columns: 1fr;
     gap: 0.65rem;
+    padding: 1rem 0;
+  }
+
+  .archive-form input,
+  .archive-form select,
+  .archive-form textarea {
+    font-size: 0.88rem;
+  }
+
+  .archive-form textarea {
+    min-height: 88px;
+  }
+
+  .archive-form__upload {
+    gap: 0.75rem;
+  }
+
+  .archive-form__upload-row {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .archive-form__upload-button {
+    font-size: 0.76rem;
+  }
+
+  .archive-form__upload-status {
+    font-size: 0.76rem;
+  }
+
+  .archive-form__upload-hint {
+    margin: 0;
+    font-size: 0.7rem;
+    line-height: 1.45;
+  }
+
+  .archive-form__url-input {
+    margin-top: 0.25rem;
+  }
+
+  .archive-form__preview {
+    min-height: 220px;
+    padding: 1.25rem;
+  }
+
+  .archive-form__preview img {
+    max-width: 200px;
+    max-height: 240px;
+  }
+
+  .archive-form__checkbox {
+    align-items: center;
+    padding: 1rem 0;
   }
 
   .archive-form__actions {
@@ -125,5 +268,32 @@
 
   .archive-form__submit {
     width: 100%;
+  }
+}
+@media (max-width: 380px) {
+  .archive-form__field {
+    gap: 0.55rem;
+  }
+
+  .archive-form__field > label,
+  .archive-form__label,
+  .archive-form__checkbox span {
+    letter-spacing: 0.14em;
+    font-size: 0.6rem;
+  }
+
+  .archive-form input,
+  .archive-form select,
+  .archive-form textarea {
+    font-size: 0.86rem;
+  }
+
+  .archive-form__upload-status,
+  .archive-form__upload-button {
+    font-size: 0.74rem;
+  }
+
+  .archive-form__upload-hint {
+    font-size: 0.68rem;
   }
 }

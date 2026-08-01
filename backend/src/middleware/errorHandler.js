@@ -46,7 +46,18 @@ export function notFoundHandler(req, res, next) {
  * Normalizes application, validation, and database errors into JSON responses.
  * In production, unexpected errors are hidden behind a generic message.
  */
-export function errorHandler(error, req, res, _next) {
+export function errorHandler(error, _req, res, _next) {
+    if (error.name === "MulterError") {
+        if (error.code === "LIMIT_FILE_SIZE") {
+            return res.status(400).json({
+                message: "Image must be smaller than 5 MB",
+            });
+        }
+
+        return res.status(400).json({
+            message: "Image upload failed",
+        });
+    }
     const mongooseError = handleMongooseError(error);
 
     const statusCode = mongooseError?.statusCode || error.statusCode || 500;

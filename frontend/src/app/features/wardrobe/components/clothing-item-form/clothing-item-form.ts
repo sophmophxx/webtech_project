@@ -1,7 +1,17 @@
-import { Component, Input, OnChanges, SimpleChanges, inject, output } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges,
+  inject,
+  output,
+  signal,
+} from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { CreateClothingItemRequest } from '../../../../core/services/clothing-item.service';
+import { ImageUploadService } from '../../../../core/services/image-upload.service';
 import { ClothingItem, ClothingItemCategory } from '../../../../shared/models/clothing-item.model';
 
 @Component({
@@ -10,13 +20,22 @@ import { ClothingItem, ClothingItemCategory } from '../../../../shared/models/cl
   templateUrl: './clothing-item-form.html',
   styleUrl: './clothing-item-form.scss',
 })
-export class ClothingItemForm implements OnChanges {
+export class ClothingItemForm implements OnChanges, OnDestroy {
   private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly imageUploadService = inject(ImageUploadService);
+
+  private selectedImageFile: File | null = null;
+  private objectUrl: string | null = null;
 
   @Input() initialItem: ClothingItem | null = null;
   @Input() submitButtonLabel = 'Save item';
 
   readonly formSubmit = output<CreateClothingItemRequest>();
+
+  readonly imagePreviewUrl = signal<string | null>(null);
+  readonly imageUploadError = signal<string | null>(null);
+  readonly isUploading = signal(false);
+  readonly selectedImageName = signal<string | null>(null);
 
   readonly categories: ClothingItemCategory[] = [
     'tops',
@@ -56,19 +75,96 @@ export class ClothingItemForm implements OnChanges {
         notes: this.initialItem.notes ?? '',
         favorite: this.initialItem.favorite ?? false,
       });
+
+      this.imagePreviewUrl.set(this.initialItem.imageUrl ?? null);
     }
   }
 
   /**
-   * Validates the form and emits a cleaned payload to the parent component.
+   * Cleans up temporary browser object URLs used for local image previews.
+   */
+  ngOnDestroy(): void {
+    this.revokeObjectUrl();
+  }
+
+  /**
+   * Stores the selected image file locally and shows a preview before upload.
+   */
+  onImageSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    this.imageUploadError.set(null);
+
+    if (!file) {
+      this.selectedImageName.set(null);
+      return;
+    }
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    const maxFileSize = 5 * 1024 * 1024;
+
+    if (!allowedTypes.includes(file.type)) {
+      this.selectedImageFile = null;
+      this.selectedImageName.set(null);
+      this.imageUploadError.set('Only JPG, PNG and WEBP images are allowed.');
+      input.value = '';
+      return;
+    }
+
+    if (file.size > maxFileSize) {
+      this.selectedImageFile = null;
+      this.selectedImageName.set(null);
+      this.imageUploadError.set('Image must be smaller than 5 MB.');
+      input.value = '';
+      return;
+    }
+
+    this.selectedImageFile = file;
+    this.selectedImageName.set(file.name);
+
+    this.revokeObjectUrl();
+    this.objectUrl = URL.createObjectURL(file);
+    this.imagePreviewUrl.set(this.objectUrl);
+  }
+
+  /**
+   * Validates the form, uploads a selected image if necessary,
+   * and emits a cleaned payload to the parent component.
    */
   submitForm(): void {
+    if (this.isUploading()) {
+      return;
+    }
+
     if (this.itemForm.invalid) {
       this.itemForm.markAllAsTouched();
       return;
     }
 
-    this.formSubmit.emit(this.buildPayload());
+    if (!this.selectedImageFile) {
+      this.formSubmit.emit(this.buildPayload());
+      return;
+    }
+
+    this.isUploading.set(true);
+    this.imageUploadError.set(null);
+
+    this.imageUploadService.uploadImage(this.selectedImageFile).subscribe({
+      next: (response) => {
+        this.itemForm.patchValue({
+          imageUrl: response.imageUrl,
+        });
+
+        this.selectedImageFile = null;
+        this.isUploading.set(false);
+        this.formSubmit.emit(this.buildPayload());
+      },
+      error: () => {
+        this.imageUploadError.set('Image could not be uploaded.');
+        this.isUploading.set(false);
+      },
+    });
   }
 
   /**
@@ -88,5 +184,15 @@ export class ClothingItemForm implements OnChanges {
       ...(formValue.notes.trim() && { notes: formValue.notes.trim() }),
       favorite: formValue.favorite,
     };
+  }
+
+  /**
+   * Removes the previous temporary preview URL from memory.
+   */
+  private revokeObjectUrl(): void {
+    if (this.objectUrl) {
+      URL.revokeObjectURL(this.objectUrl);
+      this.objectUrl = null;
+    }
   }
 }
