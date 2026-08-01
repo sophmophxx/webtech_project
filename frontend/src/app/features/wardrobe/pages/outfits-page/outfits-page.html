@@ -36,7 +36,7 @@
     } @else {
       <section class="outfits-page__grid" aria-label="Saved outfits">
         @for (outfit of outfits(); track outfit._id) {
-          <article class="outfit-card">
+          <a class="outfit-card" [routerLink]="['/outfits', outfit._id]">
             <div
               class="outfit-card__preview"
               [class.outfit-card__preview--single]="outfit.items.length === 1"
@@ -57,17 +57,13 @@
                 {{ outfit.items.length === 1 ? 'piece' : 'pieces' }}
               </p>
 
-              <h2>
-                <a [routerLink]="['/outfits', outfit._id]">
-                  {{ outfit.name }}
-                </a>
-              </h2>
+              <h2>{{ outfit.name }}</h2>
 
               @if (outfit.notes) {
                 <p class="outfit-card__notes">{{ outfit.notes }}</p>
               }
             </div>
-          </article>
+          </a>
         }
       </section>
     }
