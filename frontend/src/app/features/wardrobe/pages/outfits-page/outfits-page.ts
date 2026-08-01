@@ -39,13 +39,10 @@ export class OutfitsPage implements OnInit {
     });
   }
 
-  /**
-   * Loads all outfits from the API and updates loading and error states.
-   */
   private loadOutfits(): void {
     this.outfitService.getOutfits().subscribe({
       next: (outfits) => {
-        this.outfits.set(outfits);
+        this.outfits.set(outfits.filter((outfit) => outfit.items.length > 0));
         this.isLoading.set(false);
       },
       error: () => {
