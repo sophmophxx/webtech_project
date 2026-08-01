@@ -53,7 +53,11 @@
                 {{ outfit.items.length === 1 ? 'piece' : 'pieces' }}
               </p>
 
-              <h2>{{ outfit.name }}</h2>
+              <h2>
+                <a [routerLink]="['/outfits', outfit._id]">
+                  {{ outfit.name }}
+                </a>
+              </h2>
 
               @if (outfit.notes) {
                 <p class="outfit-card__notes">{{ outfit.notes }}</p>
