@@ -37,7 +37,11 @@
       <section class="outfits-page__grid" aria-label="Saved outfits">
         @for (outfit of outfits(); track outfit._id) {
           <article class="outfit-card">
-            <div class="outfit-card__preview">
+            <div
+              class="outfit-card__preview"
+              [class.outfit-card__preview--single]="outfit.items.length === 1"
+              [class.outfit-card__preview--two]="outfit.items.length === 2"
+            >
               @for (item of outfit.items.slice(0, 4); track item._id) {
                 <div class="outfit-card__image">
                   @if (item.imageUrl) {

@@ -87,10 +87,14 @@
 }
 
 .outfit-detail-page__pieces {
+  max-width: 1180px;
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 380px));
+  justify-content: center;
   gap: 0;
   border-top: 1px solid rgba(0, 0, 0, 0.06);
+  border-left: 1px solid rgba(0, 0, 0, 0.06);
   background: #ffffff;
 }
 
@@ -112,8 +116,11 @@
 }
 
 .outfit-piece__media img {
+  display: block;
   width: 100%;
   height: 100%;
+  max-width: 280px;
+  max-height: 280px;
   object-fit: contain;
 }
 
