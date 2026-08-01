@@ -2,12 +2,14 @@ import request from "supertest";
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import { describe, it, expect, beforeAll, afterAll, afterEach } from "vitest";
+
 import { createTestApp } from "./helpers/createTestApp.js";
 
 let app;
 let mongoServer;
 
 const ITEMS_API = "/api/v1/items";
+const OUTFITS_API = "/api/v1/outfits";
 
 beforeAll(async () => {
     process.env.NODE_ENV = "test";
@@ -260,5 +262,134 @@ describe("Clothing item API", () => {
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("Ungültige Eingabedaten");
         expect(response.body.errors).toHaveProperty("imageUrl");
+    });
+
+    it("returns 400 when updating with an invalid item id", async () => {
+        const response = await request(app)
+            .patch(`${ITEMS_API}/not-a-valid-id`)
+            .send({
+                name: "Updated Item",
+            });
+
+        expect(response.status).toBe(400);
+        expect(response.body.message).toBe("Ungültige Item-ID");
+    });
+
+    it("returns 404 when the item to update does not exist", async () => {
+        const missingId = new mongoose.Types.ObjectId().toString();
+
+        const response = await request(app)
+            .patch(`${ITEMS_API}/${missingId}`)
+            .send({
+                name: "Updated Item",
+            });
+
+        expect(response.status).toBe(404);
+        expect(response.body.message).toBe("Item nicht gefunden");
+    });
+
+    it("returns 400 when deleting with an invalid item id", async () => {
+        const response = await request(app).delete(
+            `${ITEMS_API}/not-a-valid-id`
+        );
+
+        expect(response.status).toBe(400);
+        expect(response.body.message).toBe("Ungültige Item-ID");
+    });
+
+    it("returns 404 when the item to delete does not exist", async () => {
+        const missingId = new mongoose.Types.ObjectId().toString();
+
+        const response = await request(app).delete(`${ITEMS_API}/${missingId}`);
+
+        expect(response.status).toBe(404);
+        expect(response.body.message).toBe("Item nicht gefunden");
+    });
+
+    it("removes a deleted item from outfits with remaining items", async () => {
+        const blazerResponse = await request(app).post(ITEMS_API).send({
+            name: "Black Blazer",
+            category: "outerwear",
+        });
+
+        const trousersResponse = await request(app).post(ITEMS_API).send({
+            name: "Wide Leg Trousers",
+            category: "bottoms",
+        });
+
+        const outfitResponse = await request(app)
+            .post(OUTFITS_API)
+            .send({
+                name: "Tailored Look",
+                items: [blazerResponse.body._id, trousersResponse.body._id],
+            });
+
+        expect(outfitResponse.status).toBe(201);
+
+        const deleteResponse = await request(app).delete(
+            `${ITEMS_API}/${blazerResponse.body._id}`
+        );
+
+        expect(deleteResponse.status).toBe(200);
+
+        const response = await request(app).get(
+            `${OUTFITS_API}/${outfitResponse.body._id}`
+        );
+
+        expect(response.status).toBe(200);
+        expect(response.body.items).toHaveLength(1);
+        expect(response.body.items[0]._id).toBe(trousersResponse.body._id);
+    });
+
+    it("deletes an outfit when its last item is deleted", async () => {
+        const itemResponse = await request(app).post(ITEMS_API).send({
+            name: "Black Dress",
+            category: "dresses",
+        });
+
+        const outfitResponse = await request(app)
+            .post(OUTFITS_API)
+            .send({
+                name: "Minimal Look",
+                items: [itemResponse.body._id],
+            });
+
+        expect(outfitResponse.status).toBe(201);
+
+        const deleteResponse = await request(app).delete(
+            `${ITEMS_API}/${itemResponse.body._id}`
+        );
+
+        expect(deleteResponse.status).toBe(200);
+
+        const response = await request(app).get(
+            `${OUTFITS_API}/${outfitResponse.body._id}`
+        );
+
+        expect(response.status).toBe(404);
+        expect(response.body.message).toBe("Outfit nicht gefunden");
+    });
+    it("allows requests from the configured frontend origin", async () => {
+        const response = await request(app)
+            .get("/")
+            .set("Origin", "http://localhost:4200");
+
+        expect(response.status).toBe(200);
+        expect(response.text).toBe("Backend läuft");
+
+        expect(response.headers["access-control-allow-origin"]).toBe(
+            "http://localhost:4200"
+        );
+    });
+
+    it("blocks requests from an unconfigured origin", async () => {
+        const response = await request(app)
+            .get("/")
+            .set("Origin", "https://not-allowed.example");
+
+        expect(response.status).toBe(500);
+        expect(response.body.message).toBe(
+            "CORS blocked for origin: https://not-allowed.example"
+        );
     });
 });
