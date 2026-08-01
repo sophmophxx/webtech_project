@@ -1,11 +1,14 @@
 <section class="wardrobe-page">
   <header class="wardrobe-page__topbar">
-    <a class="wardrobe-page__nav-link" routerLink="/"> Archive </a>
+    <nav class="wardrobe-page__nav">
+      <a class="wardrobe-page__nav-link" routerLink="/">Archive</a>
+      <a class="wardrobe-page__nav-link" routerLink="/outfits">Outfits</a>
+    </nav>
 
     <a class="wardrobe-page__brand" routerLink="/"> Wardrobe Archive </a>
 
     <nav class="wardrobe-page__actions" aria-label="Seitennavigation">
-      <a class="wardrobe-page__new-link" routerLink="/items/new"> Add new item </a>
+      <a class="wardrobe-page__new-link" routerLink="/items/new"> Add item </a>
     </nav>
   </header>
 
@@ -20,7 +23,7 @@
   @if (isLoading()) {
     <div class="wardrobe-page__state">
       <mat-spinner diameter="40" />
-      <p>Lade Kleidungsstücke...</p>
+      <p>Loading items...</p>
     </div>
   } @else if (errorMessage()) {
     <div class="wardrobe-page__state wardrobe-page__state--error">

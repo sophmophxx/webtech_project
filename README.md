@@ -44,15 +44,15 @@ This repository was created as a university Web Technologies project.
 
 ## Tech stack
 
-| Area | Technologies |
-| --- | --- |
-| Frontend | Angular 22, TypeScript, Angular Material, RxJS, SCSS |
-| Backend | Node.js 22, Express 5, Mongoose, Zod |
-| Database | MongoDB / MongoDB Atlas |
-| Testing | Vitest, Angular TestBed, Supertest, mongodb-memory-server |
-| Code quality | ESLint, Prettier, npm audit |
-| Deployment | Vercel (frontend), Render (backend) |
-| CI | GitHub Actions |
+| Area         | Technologies                                              |
+| ------------ | --------------------------------------------------------- |
+| Frontend     | Angular 22, TypeScript, Angular Material, RxJS, SCSS      |
+| Backend      | Node.js 22, Express 5, Mongoose, Zod                      |
+| Database     | MongoDB / MongoDB Atlas                                   |
+| Testing      | Vitest, Angular TestBed, Supertest, mongodb-memory-server |
+| Code quality | ESLint, Prettier, npm audit                               |
+| Deployment   | Vercel (frontend), Render (backend)                       |
+| CI           | GitHub Actions                                            |
 
 ## Architecture
 
@@ -188,14 +188,14 @@ npm run seed:reset --prefix backend
 
 Base URL: `http://localhost:3000/api/v1`
 
-| Method | Endpoint | Description |
-| --- | --- | --- |
-| `GET` | `/health` | Return API health information |
-| `GET` | `/items` | Return all clothing items, newest first |
-| `GET` | `/items/:id` | Return one clothing item |
-| `POST` | `/items` | Create a clothing item |
-| `PATCH` | `/items/:id` | Partially update a clothing item |
-| `DELETE` | `/items/:id` | Delete a clothing item |
+| Method   | Endpoint     | Description                             |
+| -------- | ------------ | --------------------------------------- |
+| `GET`    | `/health`    | Return API health information           |
+| `GET`    | `/items`     | Return all clothing items, newest first |
+| `GET`    | `/items/:id` | Return one clothing item                |
+| `POST`   | `/items`     | Create a clothing item                  |
+| `PATCH`  | `/items/:id` | Partially update a clothing item        |
+| `DELETE` | `/items/:id` | Delete a clothing item                  |
 
 ### Example request body
 
@@ -236,14 +236,14 @@ database.
 
 Additional useful commands:
 
-| Command | Description |
-| --- | --- |
-| `npm run test:coverage --prefix backend` | Run backend tests with coverage |
-| `npm run test:watch --prefix backend` | Run backend tests in watch mode |
-| `npm run test:ci --prefix frontend` | Run frontend tests once |
-| `npm run build --prefix frontend` | Create a production frontend build |
-| `npm run fix --prefix backend` | Format and lint-fix backend files |
-| `npm run fix --prefix frontend` | Format and lint-fix frontend files |
+| Command                                  | Description                        |
+| ---------------------------------------- | ---------------------------------- |
+| `npm run test:coverage --prefix backend` | Run backend tests with coverage    |
+| `npm run test:watch --prefix backend`    | Run backend tests in watch mode    |
+| `npm run test:ci --prefix frontend`      | Run frontend tests once            |
+| `npm run build --prefix frontend`        | Create a production frontend build |
+| `npm run fix --prefix backend`           | Format and lint-fix backend files  |
+| `npm run fix --prefix frontend`          | Format and lint-fix frontend files |
 
 ## Security
 

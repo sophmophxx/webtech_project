@@ -1,0 +1,131 @@
+<section class="outfit-detail-page">
+  <header class="outfit-detail-page__topbar">
+    <nav class="outfit-detail-page__nav">
+      <a routerLink="/">Archive</a>
+      <a routerLink="/outfits">Outfits</a>
+    </nav>
+
+    <a class="outfit-detail-page__brand" routerLink="/">Wardrobe Archive</a>
+
+    @if (outfit(); as outfit) {
+      <a class="outfit-detail-page__back-link" [routerLink]="['/outfits', outfit._id, 'edit']">
+        Edit outfit
+      </a>
+    } @else {
+      <span></span>
+    }
+  </header>
+
+  @if (isLoading()) {
+    <div class="outfit-detail-page__state">
+      <mat-spinner diameter="40" />
+      <p>Loading outfit...</p>
+    </div>
+  } @else if (errorMessage()) {
+    <div class="outfit-detail-page__state outfit-detail-page__state--error">
+      <p>{{ errorMessage() }}</p>
+    </div>
+  } @else if (outfit(); as outfit) {
+    <main class="outfit-detail-page__content">
+      <section class="outfit-detail-page__intro">
+        <p class="outfit-detail-page__eyebrow">
+          {{ outfit.items.length }}
+          {{ outfit.items.length === 1 ? 'piece' : 'pieces' }}
+        </p>
+
+        <h1>{{ outfit.name }}</h1>
+
+        @if (outfit.notes) {
+          <p>{{ outfit.notes }}</p>
+        }
+
+        <div class="outfit-detail-page__delete-area">
+          @if (showDeleteConfirmation()) {
+            <p class="outfit-detail-page__delete-warning">
+              Delete this outfit? This cannot be undone.
+            </p>
+
+            <div class="outfit-detail-page__delete-actions">
+              <button
+                class="outfit-detail-page__delete-button"
+                type="button"
+                [disabled]="isDeleting()"
+                (click)="deleteOutfit()"
+              >
+                {{ isDeleting() ? 'Deleting...' : 'Confirm delete' }}
+              </button>
+
+              <button
+                class="outfit-detail-page__cancel-button"
+                type="button"
+                [disabled]="isDeleting()"
+                (click)="cancelDelete()"
+              >
+                Cancel
+              </button>
+            </div>
+          } @else {
+            <button
+              class="outfit-detail-page__delete-button"
+              type="button"
+              (click)="requestDelete()"
+            >
+              Delete outfit
+            </button>
+          }
+        </div>
+      </section>
+
+      <section class="outfit-detail-page__pieces" aria-label="Outfit pieces">
+        @for (item of outfit.items; track item._id) {
+          <article class="outfit-piece">
+            <a
+              class="outfit-piece__media"
+              [routerLink]="['/items', item._id]"
+              [queryParams]="{ returnTo: '/outfits/' + outfit._id }"
+            >
+              @if (item.imageUrl) {
+                <img [src]="item.imageUrl" [alt]="item.name" />
+              }
+            </a>
+
+            <div class="outfit-piece__body">
+              <p class="outfit-piece__category">{{ item.category }}</p>
+              <h2>
+                <a
+                  [routerLink]="['/items', item._id]"
+                  [queryParams]="{ returnTo: '/outfits/' + outfit._id }"
+                >
+                  {{ item.name }}
+                </a>
+              </h2>
+
+              <dl class="outfit-piece__meta">
+                @if (item.brand) {
+                  <div>
+                    <dt>Brand</dt>
+                    <dd>{{ item.brand }}</dd>
+                  </div>
+                }
+
+                @if (item.color) {
+                  <div>
+                    <dt>Color</dt>
+                    <dd>{{ item.color }}</dd>
+                  </div>
+                }
+
+                @if (item.size) {
+                  <div>
+                    <dt>Size</dt>
+                    <dd>{{ item.size }}</dd>
+                  </div>
+                }
+              </dl>
+            </div>
+          </article>
+        }
+      </section>
+    </main>
+  }
+</section>

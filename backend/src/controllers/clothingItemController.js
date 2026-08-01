@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import ClothingItem from "../models/ClothingItem.js";
+import Outfit from "../models/Outfit.js";
 import { AppError } from "../utils/AppError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
@@ -77,7 +78,8 @@ export const updateClothingItem = asyncHandler(async (req, res) => {
 
 /**
  * Deletes a clothing item by id.
- * Throws a 400 error for invalid ids and a 404 error if no item exists.
+ * Also removes the deleted item from all outfits to avoid stale references.
+ * Outfits without any remaining items are deleted afterwards.
  */
 export const deleteClothingItem = asyncHandler(async (req, res) => {
     const { id } = req.params;
@@ -91,6 +93,10 @@ export const deleteClothingItem = asyncHandler(async (req, res) => {
     if (!deletedItem) {
         throw new AppError("Item nicht gefunden", 404);
     }
+
+    await Outfit.updateMany({ items: id }, { $pull: { items: id } }).exec();
+
+    await Outfit.deleteMany({ items: { $size: 0 } }).exec();
 
     res.json({ message: "Item gelöscht" });
 });

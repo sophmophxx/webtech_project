@@ -18,6 +18,8 @@ export class ClothingItemDetailPage implements OnInit {
   readonly item = signal<ClothingItem | null>(null);
   readonly isLoading = signal(true);
   readonly errorMessage = signal<string | null>(null);
+  readonly backLink = signal('/');
+  readonly backLabel = signal('Back to archive');
 
   /**
    * Reads the item id from the route and loads the matching clothing item.
@@ -25,6 +27,12 @@ export class ClothingItemDetailPage implements OnInit {
    */
   ngOnInit(): void {
     const itemId = this.route.snapshot.paramMap.get('id');
+    const returnTo = this.route.snapshot.queryParamMap.get('returnTo');
+
+    if (returnTo?.startsWith('/outfits/')) {
+      this.backLink.set(returnTo);
+      this.backLabel.set('Back to outfit');
+    }
 
     if (!itemId) {
       this.errorMessage.set('No item id found.');

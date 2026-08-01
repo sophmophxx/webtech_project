@@ -1,6 +1,9 @@
 <section class="detail-page">
   <header class="detail-page__topbar">
-    <a class="detail-page__back-link" routerLink="/">← Back to archive</a>
+    <nav class="detail-page__nav">
+      <a routerLink="/">Archive</a>
+      <a routerLink="/outfits">Outfits</a>
+    </nav>
 
     <a class="detail-page__brand" routerLink="/">Wardrobe Archive</a>
 
@@ -29,6 +32,12 @@
       </section>
 
       <section class="detail-page__info">
+        @if (backLink() !== '/') {
+          <a class="detail-page__context-link" [routerLink]="backLink()">
+            {{ backLabel() }}
+          </a>
+        }
+
         <p class="detail-page__eyebrow">{{ item.category }}</p>
 
         <h1>{{ item.name }}</h1>
