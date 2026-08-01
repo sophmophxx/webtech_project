@@ -6,6 +6,7 @@ import { ClothingItemEditPage } from './features/wardrobe/pages/clothing-item-ed
 import { OutfitCreatePage } from './features/wardrobe/pages/outfit-create-page/outfit-create-page';
 import { OutfitsPage } from './features/wardrobe/pages/outfits-page/outfits-page';
 import { OutfitDetailPage } from './features/wardrobe/pages/outfit-detail-page/outfit-detail-page';
+import { OutfitEditPage } from './features/wardrobe/pages/outfit-edit-page/outfit-edit-page';
 
 export const routes: Routes = [
   {
@@ -16,6 +17,10 @@ export const routes: Routes = [
   {
     path: 'outfits/new',
     component: OutfitCreatePage,
+  },
+  {
+    path: 'outfits/:id/edit',
+    component: OutfitEditPage,
   },
   {
     path: 'outfits/:id',

@@ -7,7 +7,13 @@
 
     <a class="outfit-detail-page__brand" routerLink="/">Wardrobe Archive</a>
 
-    <a class="outfit-detail-page__back-link" routerLink="/outfits"> Back to outfits </a>
+    @if (outfit(); as outfit) {
+      <a class="outfit-detail-page__back-link" [routerLink]="['/outfits', outfit._id, 'edit']">
+        Edit outfit
+      </a>
+    } @else {
+      <span></span>
+    }
   </header>
 
   @if (isLoading()) {

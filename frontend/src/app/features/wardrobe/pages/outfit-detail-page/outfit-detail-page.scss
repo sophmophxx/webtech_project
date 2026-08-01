@@ -246,15 +246,38 @@
 @media (max-width: 760px) {
   .outfit-detail-page__topbar {
     height: auto;
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-    padding-block: 1rem;
-    text-align: center;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'brand brand'
+      'nav action';
+    row-gap: 0.65rem;
+    padding: 0.95rem 1.25rem 0.85rem;
+    text-align: initial;
   }
 
-  .outfit-detail-page__nav,
-  .outfit-detail-page__back-link {
+  .outfit-detail-page__brand {
+    grid-area: brand;
     justify-self: center;
+    font-size: 0.86rem;
+    letter-spacing: 0.2em;
+    white-space: nowrap;
+  }
+
+  .outfit-detail-page__nav {
+    grid-area: nav;
+    justify-self: start;
+    gap: 0.8rem;
+  }
+
+  .outfit-detail-page__nav a {
+    font-size: 0.72rem;
+  }
+
+  .outfit-detail-page__back-link {
+    grid-area: action;
+    justify-self: end;
+    font-size: 0.72rem;
+    padding-bottom: 0.12rem;
   }
 
   .outfit-detail-page__content {
@@ -262,6 +285,7 @@
   }
 
   .outfit-detail-page__pieces {
+    max-width: none;
     grid-template-columns: 1fr;
   }
 
@@ -273,5 +297,10 @@
   .outfit-piece__media {
     height: 300px;
     padding: 1.5rem 2rem;
+  }
+
+  .outfit-piece__media img {
+    max-width: 260px;
+    max-height: 260px;
   }
 }
