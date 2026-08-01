@@ -66,15 +66,6 @@
               @if (outfit.notes) {
                 <p class="outfit-card__notes">{{ outfit.notes }}</p>
               }
-
-              <button
-                class="outfit-card__delete"
-                type="button"
-                aria-label="Delete outfit"
-                (click)="deleteOutfit(outfit._id)"
-              >
-                Remove
-              </button>
             </div>
           </article>
         }

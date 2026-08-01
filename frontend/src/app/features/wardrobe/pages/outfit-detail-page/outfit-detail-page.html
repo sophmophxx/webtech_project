@@ -32,6 +32,42 @@
         @if (outfit.notes) {
           <p>{{ outfit.notes }}</p>
         }
+
+        <div class="outfit-detail-page__delete-area">
+          @if (showDeleteConfirmation()) {
+            <p class="outfit-detail-page__delete-warning">
+              Delete this outfit? This cannot be undone.
+            </p>
+
+            <div class="outfit-detail-page__delete-actions">
+              <button
+                class="outfit-detail-page__delete-button"
+                type="button"
+                [disabled]="isDeleting()"
+                (click)="deleteOutfit()"
+              >
+                {{ isDeleting() ? 'Deleting...' : 'Confirm delete' }}
+              </button>
+
+              <button
+                class="outfit-detail-page__cancel-button"
+                type="button"
+                [disabled]="isDeleting()"
+                (click)="cancelDelete()"
+              >
+                Cancel
+              </button>
+            </div>
+          } @else {
+            <button
+              class="outfit-detail-page__delete-button"
+              type="button"
+              (click)="requestDelete()"
+            >
+              Delete outfit
+            </button>
+          }
+        </div>
       </section>
 
       <section class="outfit-detail-page__pieces" aria-label="Outfit pieces">

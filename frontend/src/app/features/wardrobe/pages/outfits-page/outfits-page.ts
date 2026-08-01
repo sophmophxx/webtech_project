@@ -25,20 +25,6 @@ export class OutfitsPage implements OnInit {
     this.loadOutfits();
   }
 
-  /**
-   * Deletes an outfit through the API and removes it from the local page state.
-   */
-  deleteOutfit(id: string): void {
-    this.outfitService.deleteOutfit(id).subscribe({
-      next: () => {
-        this.outfits.update((outfits) => outfits.filter((outfit) => outfit._id !== id));
-      },
-      error: () => {
-        this.errorMessage.set('Outfit could not be deleted.');
-      },
-    });
-  }
-
   private loadOutfits(): void {
     this.outfitService.getOutfits().subscribe({
       next: (outfits) => {
