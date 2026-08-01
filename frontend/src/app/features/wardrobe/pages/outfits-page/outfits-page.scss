@@ -290,4 +290,9 @@
     min-height: 300px;
     padding: 1.5rem;
   }
+
+  .outfits-page__intro h1 {
+    font-size: clamp(2.4rem, 12vw, 3.6rem);
+    line-height: 1;
+  }
 }

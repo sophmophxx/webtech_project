@@ -17,14 +17,12 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-.detail-page__back-link,
 .detail-page__edit-link {
-  font-size: 0.76rem;
-  color: #000000;
-  text-decoration: none;
+  justify-self: end;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 0.16rem;
 }
 
-.detail-page__back-link:hover,
 .detail-page__edit-link:hover {
   opacity: 0.55;
 }
@@ -39,10 +37,22 @@
   text-decoration: none;
 }
 
+.detail-page__nav {
+  justify-self: start;
+  display: flex;
+  gap: 1.1rem;
+}
+
+.detail-page__nav a,
 .detail-page__edit-link {
-  justify-self: end;
-  border-bottom: 1px solid currentColor;
-  padding-bottom: 0.16rem;
+  font-size: 0.76rem;
+  color: #000000;
+  text-decoration: none;
+}
+
+.detail-page__nav a:hover,
+.detail-page__edit-link:hover {
+  opacity: 0.55;
 }
 
 .detail-page__content {
@@ -172,15 +182,78 @@
 
 @media (max-width: 760px) {
   .detail-page__topbar {
-    grid-template-columns: 1fr;
     height: auto;
-    gap: 0.75rem;
-    padding-block: 1rem;
-    text-align: center;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'brand brand'
+      'nav action';
+    row-gap: 0.65rem;
+    padding: 0.95rem 1.25rem 0.85rem;
+    text-align: initial;
+  }
+
+  .detail-page__brand {
+    grid-area: brand;
+    justify-self: center;
+    font-size: 0.86rem;
+    letter-spacing: 0.2em;
+    white-space: nowrap;
+  }
+
+  .detail-page__nav {
+    grid-area: nav;
+    justify-self: start;
+    gap: 0.8rem;
+  }
+
+  .detail-page__nav a {
+    font-size: 0.72rem;
   }
 
   .detail-page__edit-link {
-    justify-self: center;
+    grid-area: action;
+    justify-self: end;
+    font-size: 0.72rem;
+    padding-bottom: 0.12rem;
+  }
+
+  .detail-page__context-link {
+    width: fit-content;
+    align-self: flex-start;
+    margin-bottom: 2rem;
+    color: rgba(0, 0, 0, 0.72);
+    text-decoration: none;
+    font-size: 0.72rem;
+    line-height: 1.2;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 0.12rem;
+  }
+
+  .detail-page__context-link:hover {
+    color: #000000;
+  }
+
+  .detail-page__context-link:hover {
+    opacity: 0.55;
+  }
+
+  .detail-page__content {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-page__media {
+    min-height: 420px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .detail-page__media img {
+    max-width: 260px;
+    max-height: 300px;
+  }
+
+  .detail-page__info {
+    justify-content: flex-start;
   }
 
   .detail-page__meta div {

@@ -119,37 +119,30 @@ app-clothing-item-card {
     grid-template-areas:
       'brand brand'
       'archive action';
-    row-gap: 0.9rem;
-    padding: 1rem 1.25rem 0.95rem;
+    row-gap: 0.65rem;
+    padding: 0.95rem 1.25rem 0.85rem;
     text-align: initial;
   }
 
   .wardrobe-page__brand {
     grid-area: brand;
     justify-self: center;
-    font-size: 0.95rem;
-    letter-spacing: 0.18em;
+    font-size: 0.86rem;
+    letter-spacing: 0.2em;
     white-space: nowrap;
   }
 
-  .wardrobe-page__nav {
-    grid-area: archive;
-    justify-self: start;
-    gap: 0.8rem;
+  .wardrobe-page__nav-link {
+    font-size: 0.72rem;
   }
 
-  .wardrobe-page__nav-link {
-    font-size: 0.74rem;
+  .wardrobe-page__new-link {
+    font-size: 0.72rem;
   }
 
   .wardrobe-page__actions {
     grid-area: action;
     justify-self: end;
-  }
-
-  .wardrobe-page__new-link {
-    font-size: 0.74rem;
-    padding-bottom: 0.12rem;
   }
 
   .wardrobe-page__intro {

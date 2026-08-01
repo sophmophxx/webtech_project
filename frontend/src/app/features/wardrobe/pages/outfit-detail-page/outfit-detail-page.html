@@ -92,7 +92,10 @@
             <div class="outfit-piece__body">
               <p class="outfit-piece__category">{{ item.category }}</p>
               <h2>
-                <a [routerLink]="['/items', item._id]">
+                <a
+                  [routerLink]="['/items', item._id]"
+                  [queryParams]="{ returnTo: '/outfits/' + outfit._id }"
+                >
                   {{ item.name }}
                 </a>
               </h2>
