@@ -5,6 +5,7 @@ import { ClothingItemDetailPage } from './features/wardrobe/pages/clothing-item-
 import { ClothingItemEditPage } from './features/wardrobe/pages/clothing-item-edit-page/clothing-item-edit-page';
 import { OutfitCreatePage } from './features/wardrobe/pages/outfit-create-page/outfit-create-page';
 import { OutfitsPage } from './features/wardrobe/pages/outfits-page/outfits-page';
+import { OutfitDetailPage } from './features/wardrobe/pages/outfit-detail-page/outfit-detail-page';
 
 export const routes: Routes = [
   {
@@ -15,6 +16,10 @@ export const routes: Routes = [
   {
     path: 'outfits/new',
     component: OutfitCreatePage,
+  },
+  {
+    path: 'outfits/:id',
+    component: OutfitDetailPage,
   },
   {
     path: 'outfits',
