@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 import { connectDB } from "../src/config/db.js";
 import { env } from "../src/config/env.js";
 import ClothingItem from "../src/models/ClothingItem.js";
+import Outfit from "../src/models/Outfit.js";
 
 const sampleItems = [
     {
@@ -95,7 +96,7 @@ async function seedClothingItems() {
     await connectDB();
 
     if (shouldReset) {
-        await ClothingItem.deleteMany({});
+        await Outfit.deleteMany({});
         await ClothingItem.deleteMany({});
         console.log("Existing outfits and clothing items deleted.");
     }
