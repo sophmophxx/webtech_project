@@ -15,7 +15,9 @@ Node.js and Express, and a MongoDB database accessed through Mongoose.
 
 Users can maintain a digital archive of clothing items and combine those items into reusable
 outfits. Both resources support complete create, read, update, and delete workflows. The visual
-design follows a reduced editorial style and adapts to desktop and mobile screen sizes.
+design follows a reduced editorial style and adapts to desktop and mobile screen sizes. Reusable
+category filters help users navigate the wardrobe and the item selection used by the outfit
+editor.
 
 ## Table of contents
 
@@ -51,9 +53,13 @@ Render service can enter an idle state.
 ### Wardrobe
 
 - Display all saved clothing items in a responsive archive
+- Filter the archive by `all`, `tops`, `bottoms`, `dresses`, `outerwear`, `shoes`, `bags`,
+  `accessories`, or `other`
+- Display a dedicated empty state when the selected category contains no items
 - Open a dedicated detail page for every item
 - Add new clothing items through a reusable reactive form
 - Edit existing items with prefilled form values
+- Cancel an edit and return to the corresponding item detail page without saving changes
 - Delete an item only after an explicit confirmation
 - Store category, brand, color, size, image path, notes, and favorite status
 - Use either an absolute HTTP/HTTPS image URL or a frontend-relative image path
@@ -64,6 +70,8 @@ Render service can enter an idle state.
 
 - Display all saved outfits with previews of up to four selected pieces
 - Create an outfit by selecting existing wardrobe items
+- Filter the available pieces by category while creating or editing an outfit
+- Preserve the current item selection when switching between filter categories
 - Require at least one unique clothing item per outfit
 - Edit outfit information and its selected pieces
 - Open every referenced item from the outfit detail page
@@ -83,6 +91,9 @@ Render service can enter an idle state.
 ### User experience and design
 
 - Responsive SCSS layouts for desktop and mobile devices
+- Reusable category filter with active states, keyboard focus styles, and ARIA attributes
+- Horizontally scrollable category navigation on narrow screens
+- Consistently sized selection cards for calm and predictable outfit-editor layouts
 - Angular Material components for icons, cards, buttons, and loading indicators
 - Custom Wardrobe Archive favicon
 - Dedicated frontend 404 page for unknown routes
@@ -190,8 +201,10 @@ flowchart TD
   form.
 - **Services** encapsulate all HTTP communication and return typed RxJS observables.
 - **Models** describe the TypeScript structures received from and sent to the API.
-- **Signals** store local page state such as data, loading flags, error messages, and delete
-  confirmations.
+- **Signals** store local page state such as data, the selected category, loading flags, error
+  messages, and delete confirmations.
+- **Computed signals** derive filtered item collections without changing the data received from
+  the API.
 - **Environment files** select the local or deployed API base URL during the Angular build.
 
 ### Backend responsibilities
@@ -212,6 +225,23 @@ flowchart TD
 5. The controller applies business rules and calls a Mongoose model.
 6. Mongoose reads or changes the MongoDB documents.
 7. The API returns JSON and the Angular page updates its signals.
+
+### Category filter flow
+
+Category filtering is implemented entirely in the frontend and does not trigger additional API
+requests:
+
+1. `ClothingItemService` loads the complete item collection once.
+2. Each page stores the active filter in a `selectedCategory` signal.
+3. A `filteredItems` computed signal returns either all items or only matching items.
+4. The reusable `CategoryFilter` component receives the active value through an input and emits
+   category changes through an output.
+5. Outfit selections are stored separately in a `Set<string>`, so changing the visible category
+   does not remove already selected pieces.
+
+The `CLOTHING_ITEM_CATEGORIES` readonly tuple is the shared source for the TypeScript category
+type, the clothing item form options, and the filter buttons. This prevents the supported
+categories from being duplicated across components.
 
 ## Data model
 
@@ -355,7 +385,7 @@ Example validation response:
 
 ```json
 {
-  "message": "Ungültige Eingabedaten",
+  "message": "UngÃ¼ltige Eingabedaten",
   "errors": {
     "name": ["Invalid input"]
   }
@@ -402,7 +432,10 @@ webtech_project/
 |   |   |   |-- features/
 |   |   |   |   `-- wardrobe/
 |   |   |   |       |-- components/
-|   |   |   |       `-- pages/
+|   |   |   |       |   |-- category-filter/
+|   |   |   |       |   |-- clothing-item-card/
+|   |   |   |       |   `-- clothing-item-form/
+|   |   |   |       `-- pages/        # Wardrobe, item, and outfit route pages
 |   |   |   |-- shared/
 |   |   |   |   |-- models/      # TypeScript interfaces
 |   |   |   |   `-- pages/       # Shared 404 page
@@ -591,8 +624,10 @@ Frontend tests use Vitest and Angular TestBed. They cover:
 - API services and expected HTTP methods
 - Page loading, success, empty, and error states
 - Reactive form validation and payload creation
-- Item and outfit selection
+- Item and outfit selection, including selection persistence across categories
+- Category filtering in the wardrobe and both outfit editors
 - Routing and contextual back navigation
+- Cancel navigation from the item editor to the item detail page
 - Delete confirmation workflows
 - Keyboard interaction on clothing item cards
 - Wildcard-route 404 page rendering
@@ -661,7 +696,7 @@ features are possible future extensions:
 
 - User accounts, authentication, and user-specific data
 - Direct image upload and external object storage
-- Search, category filters, and sorting controls in the user interface
+- Search and sorting controls in the user interface
 - Pagination for larger wardrobes
 - Automated end-to-end browser tests
 - OpenAPI or Swagger-generated API documentation
@@ -670,13 +705,11 @@ features are possible future extensions:
 
 The following AI tool was used during development:
 
-- **OpenAI ChatGPT / Codex:** support with architecture discussions, debugging,
-  test strategy and test review, implementation examples, documentation, README drafting, and the
-  custom favicon markup.
+- **OpenAI ChatGPT / Codex:** support with architecture discussions, debugging, test strategy and test review,
+  implementation examples, documentation, README drafting, and the custom favicon markup.
 
 AI-generated suggestions were reviewed, adapted to the project structure, and verified through
-manual checks, automated tests, linting, and production builds. Responsibility for the submitted
-code and the ability to explain it remain with the author.
+manual checks, automated tests, linting, and production builds.
 
 ## Author
 
