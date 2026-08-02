@@ -1,4 +1,4 @@
-import { Component, inject, Input, output } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 
@@ -14,8 +14,6 @@ export class ClothingItemCard {
   private readonly router = inject(Router);
 
   @Input({ required: true }) item!: ClothingItem;
-
-  readonly deleteItem = output<string>();
 
   /**
    * Navigates to the detail page of the selected clothing item.
