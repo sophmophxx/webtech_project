@@ -96,7 +96,8 @@ async function seedClothingItems() {
 
     if (shouldReset) {
         await ClothingItem.deleteMany({});
-        console.log("Existing clothing items deleted.");
+        await ClothingItem.deleteMany({});
+        console.log("Existing outfits and clothing items deleted.");
     }
 
     const createdItems = await ClothingItem.insertMany(sampleItems);
