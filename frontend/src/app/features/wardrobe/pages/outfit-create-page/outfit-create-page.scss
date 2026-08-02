@@ -1,5 +1,6 @@
 .outfit-create-page {
   min-height: 100vh;
+  overflow-x: clip;
   background: #ffffff;
 }
 
@@ -35,11 +36,11 @@
 
 .outfit-create-page__nav-link {
   justify-self: end;
-  font-size: 0.76rem;
-  color: #000000;
-  text-decoration: none;
   border-bottom: 1px solid currentColor;
   padding-bottom: 0.16rem;
+  color: #000000;
+  text-decoration: none;
+  font-size: 0.76rem;
 }
 
 .outfit-create-page__nav-link:empty {
@@ -51,16 +52,19 @@
 }
 
 .outfit-create-page__brand {
+  color: #000000;
+  text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 0.24em;
   font-family: Georgia, 'Times New Roman', serif;
   font-size: clamp(1rem, 1.35vw, 1.35rem);
   font-weight: 500;
-  color: #000000;
-  text-decoration: none;
 }
 
 .outfit-create-page__content {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
   max-width: 1180px;
   margin: 0 auto;
   padding: clamp(3.5rem, 7vw, 5.5rem) var(--page-padding);
@@ -74,11 +78,11 @@
 
 .outfit-create-page__eyebrow {
   margin: 0 0 1rem;
+  color: rgba(0, 0, 0, 0.48);
   text-transform: uppercase;
   letter-spacing: 0.22em;
   font-size: 0.64rem;
   font-weight: 400;
-  color: rgba(0, 0, 0, 0.48);
 }
 
 .outfit-create-page__intro h1 {
@@ -92,18 +96,18 @@
 .outfit-create-page__intro p:last-child {
   max-width: 500px;
   margin: 1.15rem auto 0;
+  color: rgba(0, 0, 0, 0.52);
   font-size: 0.84rem;
   line-height: 1.55;
-  color: rgba(0, 0, 0, 0.52);
 }
 
 .outfit-create-page__state {
   min-height: 320px;
   display: grid;
   place-items: center;
-  text-align: center;
   gap: 1rem;
   color: rgba(0, 0, 0, 0.52);
+  text-align: center;
 }
 
 .outfit-create-page__state--error {
@@ -111,6 +115,9 @@
 }
 
 .outfit-builder {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
   display: grid;
   gap: 3rem;
 }
@@ -130,25 +137,25 @@
 
 .outfit-builder__field label,
 .outfit-builder__checkbox span {
+  color: rgba(0, 0, 0, 0.48);
   text-transform: uppercase;
   letter-spacing: 0.16em;
   font-size: 0.62rem;
   font-weight: 400;
-  color: rgba(0, 0, 0, 0.48);
 }
 
 .outfit-builder input,
 .outfit-builder textarea {
   width: 100%;
   border: 0;
+  border-radius: 0;
   outline: 0;
   padding: 0;
   background: transparent;
-  border-radius: 0;
+  color: #000000;
   font: inherit;
   font-size: 0.9rem;
   line-height: 1.45;
-  color: #000000;
 }
 
 .outfit-builder input::placeholder,
@@ -157,8 +164,8 @@
 }
 
 .outfit-builder textarea {
-  resize: vertical;
   min-height: 88px;
+  resize: vertical;
 }
 
 .outfit-builder__field:focus-within {
@@ -180,6 +187,11 @@
   accent-color: #000000;
 }
 
+.outfit-builder__selection {
+  width: 100%;
+  min-width: 0;
+}
+
 .outfit-builder__selection-header {
   display: flex;
   justify-content: space-between;
@@ -190,25 +202,50 @@
 .outfit-builder__selection-header p,
 .outfit-builder__selection-header span {
   margin: 0;
+  color: rgba(0, 0, 0, 0.48);
   text-transform: uppercase;
   letter-spacing: 0.16em;
   font-size: 0.62rem;
   font-weight: 400;
+}
+
+.outfit-builder__selection app-category-filter {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+
+.outfit-builder__empty-filter {
+  margin: 0;
+  padding: 4rem 1.25rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   color: rgba(0, 0, 0, 0.48);
+  text-align: center;
+  font-size: 0.78rem;
 }
 
 .outfit-builder__grid {
+  width: 100%;
+  min-width: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
   gap: 0;
   border-top: 1px solid rgba(0, 0, 0, 0.06);
   border-left: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .outfit-piece {
-  min-height: 320px;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: 320px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   padding: 0;
   border: 0;
   border-right: 1px solid rgba(0, 0, 0, 0.06);
@@ -224,45 +261,66 @@
 }
 
 .outfit-piece__media {
+  box-sizing: border-box;
+  flex: 0 0 220px;
+  width: 100%;
+  min-width: 0;
   height: 220px;
   display: grid;
   place-items: center;
+  overflow: hidden;
   padding: 1.5rem;
 }
 
 .outfit-piece__media img {
+  display: block;
   width: 100%;
   height: 100%;
+  min-width: 0;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
 }
 
 .outfit-piece__body {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  flex: 1;
   display: grid;
+  align-content: start;
   gap: 0.35rem;
+  overflow: hidden;
   padding: 1rem 1.1rem 1.1rem;
 }
 
 .outfit-piece__category {
+  color: rgba(0, 0, 0, 0.46);
   text-transform: uppercase;
   letter-spacing: 0.14em;
   font-size: 0.6rem;
-  color: rgba(0, 0, 0, 0.46);
 }
 
 .outfit-piece__name {
+  overflow: hidden;
   font-size: 0.9rem;
   line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .outfit-piece__meta {
-  font-size: 0.76rem;
+  overflow: hidden;
   color: rgba(0, 0, 0, 0.48);
+  font-size: 0.76rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .outfit-builder__error {
   margin: 0.45rem 0 0;
-  font-size: 0.72rem;
   color: var(--color-danger);
+  font-size: 0.72rem;
 }
 
 .outfit-builder__error--selection {
@@ -277,23 +335,23 @@
 }
 
 .outfit-builder__actions a {
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 0.12rem;
   color: #000000;
   text-decoration: none;
   font-size: 0.78rem;
-  border-bottom: 1px solid currentColor;
-  padding-bottom: 0.12rem;
 }
 
 .outfit-builder__submit {
   min-width: 180px;
   border: 1px solid rgba(0, 0, 0, 0.85);
+  padding: 0.85rem 1.25rem;
   background: transparent;
   color: #000000;
-  padding: 0.85rem 1.25rem;
   cursor: pointer;
-  font-size: 0.76rem;
-  letter-spacing: 0.08em;
   text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.76rem;
 }
 
 .outfit-builder__submit:hover:not(:disabled) {
@@ -339,29 +397,33 @@
   .outfit-create-page__nav-link {
     grid-area: action;
     justify-self: end;
-    font-size: 0.72rem;
     padding-bottom: 0.12rem;
+    font-size: 0.72rem;
   }
 
   .outfit-create-page__content {
+    width: 100%;
+    min-width: 0;
     padding: 3.5rem 1.25rem 4rem;
   }
 
   .outfit-builder__field {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 0.65rem;
   }
 
   .outfit-builder__grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .outfit-piece {
-    min-height: auto;
+    height: 360px;
   }
 
   .outfit-piece__media {
-    height: 280px;
+    flex-basis: 260px;
+    height: 260px;
+    padding: 1.25rem;
   }
 
   .outfit-builder__actions {

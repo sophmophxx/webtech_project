@@ -1,12 +1,17 @@
 import { Component, Input, OnChanges, SimpleChanges, inject, output } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 import { CreateClothingItemRequest } from '../../../../core/services/clothing-item.service';
-import { ClothingItem, ClothingItemCategory } from '../../../../shared/models/clothing-item.model';
+import {
+  CLOTHING_ITEM_CATEGORIES,
+  ClothingItem,
+  ClothingItemCategory,
+} from '../../../../shared/models/clothing-item.model';
 
 @Component({
   selector: 'app-clothing-item-form',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './clothing-item-form.html',
   styleUrl: './clothing-item-form.scss',
 })
@@ -15,19 +20,11 @@ export class ClothingItemForm implements OnChanges {
 
   @Input() initialItem: ClothingItem | null = null;
   @Input() submitButtonLabel = 'Save item';
+  @Input() cancelLink: string | readonly string[] | null = null;
 
   readonly formSubmit = output<CreateClothingItemRequest>();
 
-  readonly categories: ClothingItemCategory[] = [
-    'tops',
-    'bottoms',
-    'dresses',
-    'outerwear',
-    'shoes',
-    'bags',
-    'accessories',
-    'other',
-  ];
+  readonly categories: readonly ClothingItemCategory[] = CLOTHING_ITEM_CATEGORIES;
 
   readonly itemForm = this.formBuilder.group({
     name: ['', [Validators.required, Validators.maxLength(100)]],

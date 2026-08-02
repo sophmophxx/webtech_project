@@ -51,6 +51,7 @@
 
           <div class="outfit-builder__field outfit-builder__field--textarea">
             <label for="notes">Notes</label>
+
             <textarea
               id="notes"
               formControlName="notes"
@@ -71,37 +72,47 @@
             <span>{{ selectedItemIds().size }} selected</span>
           </div>
 
+          <app-category-filter
+            ariaLabel="Filter outfit pieces by category"
+            [selectedCategory]="selectedCategory()"
+            (categoryChange)="setCategory($event)"
+          />
+
           @if (selectionError()) {
             <p class="outfit-builder__error outfit-builder__error--selection">
               {{ selectionError() }}
             </p>
           }
 
-          <div class="outfit-builder__grid">
-            @for (item of items(); track item._id) {
-              <button
-                class="outfit-piece"
-                type="button"
-                [class.outfit-piece--selected]="isSelected(item._id)"
-                (click)="toggleItemSelection(item._id)"
-              >
-                <span class="outfit-piece__media">
-                  @if (item.imageUrl) {
-                    <img [src]="item.imageUrl" [alt]="item.name" />
-                  }
-                </span>
+          @if (filteredItems().length === 0) {
+            <p class="outfit-builder__empty-filter">No pieces in this category.</p>
+          } @else {
+            <div class="outfit-builder__grid">
+              @for (item of filteredItems(); track item._id) {
+                <button
+                  class="outfit-piece"
+                  type="button"
+                  [class.outfit-piece--selected]="isSelected(item._id)"
+                  (click)="toggleItemSelection(item._id)"
+                >
+                  <span class="outfit-piece__media">
+                    @if (item.imageUrl) {
+                      <img [src]="item.imageUrl" [alt]="item.name" />
+                    }
+                  </span>
 
-                <span class="outfit-piece__body">
-                  <span class="outfit-piece__category">{{ item.category }}</span>
-                  <span class="outfit-piece__name">{{ item.name }}</span>
+                  <span class="outfit-piece__body">
+                    <span class="outfit-piece__category">{{ item.category }}</span>
+                    <span class="outfit-piece__name">{{ item.name }}</span>
 
-                  @if (item.brand) {
-                    <span class="outfit-piece__meta">{{ item.brand }}</span>
-                  }
-                </span>
-              </button>
-            }
-          </div>
+                    @if (item.brand) {
+                      <span class="outfit-piece__meta">{{ item.brand }}</span>
+                    }
+                  </span>
+                </button>
+              }
+            </div>
+          }
         </section>
 
         <div class="outfit-builder__actions">

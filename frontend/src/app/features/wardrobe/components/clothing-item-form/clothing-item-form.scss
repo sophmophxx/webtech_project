@@ -90,7 +90,21 @@
 .archive-form__actions {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: 1.25rem;
   padding-top: 1.5rem;
+}
+
+.archive-form__cancel {
+  color: #000000;
+  text-decoration: none;
+  font-size: 0.78rem;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 0.12rem;
+}
+
+.archive-form__cancel:hover {
+  opacity: 0.55;
 }
 
 .archive-form__submit {
@@ -120,7 +134,12 @@
   }
 
   .archive-form__actions {
-    justify-content: stretch;
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .archive-form__cancel {
+    align-self: center;
   }
 
   .archive-form__submit {

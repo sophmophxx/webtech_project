@@ -34,6 +34,7 @@
 
       <app-clothing-item-form
         [initialItem]="item"
+        [cancelLink]="['/items', item._id]"
         submitButtonLabel="Save changes"
         (formSubmit)="updateItem($event)"
       />

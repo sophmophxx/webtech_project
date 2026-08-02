@@ -293,4 +293,27 @@ describe('OutfitCreatePage', () => {
     expect(component.isSubmitting()).toBe(false);
     expect(router.navigate).not.toHaveBeenCalled();
   });
+  it('should filter available pieces without clearing the current selection', () => {
+    createComponent();
+
+    component.toggleItemSelection('item-1');
+
+    const element = fixture.nativeElement as HTMLElement;
+    const bottomsFilter = element.querySelector<HTMLButtonElement>('[data-category="bottoms"]');
+
+    bottomsFilter?.click();
+    fixture.detectChanges();
+
+    const itemButtons = element.querySelectorAll('.outfit-piece');
+
+    expect(component.selectedCategory()).toBe('bottoms');
+    expect(component.filteredItems()).toEqual([mockItems[1]]);
+
+    // Das ausgefilterte Item bleibt Bestandteil des Outfits.
+    expect(component.isSelected('item-1')).toBe(true);
+    expect(component.selectedItemIds().size).toBe(1);
+
+    expect(itemButtons.length).toBe(1);
+    expect(itemButtons[0].textContent).toContain('Wide Leg Trousers');
+  });
 });

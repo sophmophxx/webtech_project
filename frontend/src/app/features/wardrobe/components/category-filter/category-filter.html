@@ -1,0 +1,23 @@
+<div class="category-filter" role="group" [attr.aria-label]="ariaLabel()">
+  <button
+    type="button"
+    data-category="all"
+    [class.category-filter__button--active]="selectedCategory() === 'all'"
+    [attr.aria-pressed]="selectedCategory() === 'all'"
+    (click)="selectCategory('all')"
+  >
+    All
+  </button>
+
+  @for (category of categories; track category) {
+    <button
+      type="button"
+      [attr.data-category]="category"
+      [class.category-filter__button--active]="selectedCategory() === category"
+      [attr.aria-pressed]="selectedCategory() === category"
+      (click)="selectCategory(category)"
+    >
+      {{ category }}
+    </button>
+  }
+</div>

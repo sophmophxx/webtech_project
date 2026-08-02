@@ -59,6 +59,10 @@
   </label>
 
   <div class="archive-form__actions">
+    @if (cancelLink) {
+      <a class="archive-form__cancel" [routerLink]="cancelLink">Cancel</a>
+    }
+
     <button class="archive-form__submit" type="submit">
       {{ submitButtonLabel }}
     </button>

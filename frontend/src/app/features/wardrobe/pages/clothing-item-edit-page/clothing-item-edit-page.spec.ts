@@ -93,7 +93,6 @@ describe('ClothingItemEditPage', () => {
     expect(component).toBeTruthy();
 
     expect(clothingItemServiceMock.getItemById).toHaveBeenCalledTimes(1);
-
     expect(clothingItemServiceMock.getItemById).toHaveBeenCalledWith('item-1');
 
     expect(component.item()).toEqual(mockItem);
@@ -145,7 +144,6 @@ describe('ClothingItemEditPage', () => {
     expect(element.textContent).toContain('No item id found.');
 
     expect(element.querySelector('.editor-page__back-link[href]')).toBeNull();
-
     expect(element.querySelector('app-clothing-item-form')).toBeNull();
   });
 
@@ -160,7 +158,6 @@ describe('ClothingItemEditPage', () => {
     expect(component.isLoading()).toBe(false);
 
     expect(component.errorMessage()).toBe('Item could not be loaded.');
-
     expect(element.textContent).toContain('Item could not be loaded.');
 
     expect(element.querySelector('app-clothing-item-form')).toBeNull();
@@ -177,6 +174,13 @@ describe('ClothingItemEditPage', () => {
 
     expect(formComponent.initialItem).toEqual(mockItem);
     expect(formComponent.submitButtonLabel).toBe('Save changes');
+    expect(formComponent.cancelLink).toEqual(['/items', 'item-1']);
+
+    const element = fixture.nativeElement as HTMLElement;
+    const cancelLink = element.querySelector<HTMLAnchorElement>('.archive-form__cancel');
+
+    expect(cancelLink?.textContent?.trim()).toBe('Cancel');
+    expect(cancelLink?.getAttribute('href')).toBe('/items/item-1');
 
     expect(formComponent.itemForm.getRawValue()).toEqual({
       name: 'Black Blazer',
@@ -213,7 +217,6 @@ describe('ClothingItemEditPage', () => {
     component.updateItem(payload);
 
     expect(clothingItemServiceMock.updateItem).toHaveBeenCalledTimes(1);
-
     expect(clothingItemServiceMock.updateItem).toHaveBeenCalledWith('item-1', payload);
 
     expect(component.isSubmitting()).toBe(true);
@@ -264,12 +267,10 @@ describe('ClothingItemEditPage', () => {
     expect(clothingItemServiceMock.updateItem).toHaveBeenCalledWith('item-1', payload);
 
     expect(component.errorMessage()).toBe('Item could not be updated.');
-
     expect(component.isSubmitting()).toBe(false);
     expect(router.navigate).not.toHaveBeenCalled();
 
     expect(element.textContent).toContain('Item could not be updated.');
-
     expect(element.querySelector('.editor-page__state--error')).not.toBeNull();
   });
 
@@ -294,7 +295,6 @@ describe('ClothingItemEditPage', () => {
     formComponent.formSubmit.emit(payload);
 
     expect(clothingItemServiceMock.updateItem).toHaveBeenCalledTimes(1);
-
     expect(clothingItemServiceMock.updateItem).toHaveBeenCalledWith('item-1', payload);
 
     expect(router.navigate).toHaveBeenCalledWith(['/items', updatedItem._id]);

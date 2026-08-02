@@ -169,4 +169,23 @@ describe('WardrobePage', () => {
     expect(addItemLink?.textContent?.trim()).toBe('Add item');
     expect(addItemLink?.getAttribute('href')).toBe('/items/new');
   });
+  it('should filter clothing items by category', () => {
+    createComponent();
+
+    const element = fixture.nativeElement as HTMLElement;
+    const bottomsFilter = element.querySelector<HTMLButtonElement>('[data-category="bottoms"]');
+
+    bottomsFilter?.click();
+    fixture.detectChanges();
+
+    const cardDebugElements = fixture.debugElement.queryAll(By.directive(ClothingItemCard));
+
+    expect(component.selectedCategory()).toBe('bottoms');
+    expect(component.filteredItems()).toEqual([mockItems[1]]);
+    expect(cardDebugElements.length).toBe(1);
+
+    const card = cardDebugElements[0].componentInstance as ClothingItemCard;
+
+    expect(card.item).toEqual(mockItems[1]);
+  });
 });
