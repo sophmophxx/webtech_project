@@ -83,6 +83,22 @@
   padding: clamp(2rem, 5vw, 5rem);
 }
 
+.detail-page__context-link {
+  width: fit-content;
+  align-self: flex-start;
+  margin-bottom: 2rem;
+  color: rgba(0, 0, 0, 0.72);
+  text-decoration: none;
+  font-size: 0.72rem;
+  line-height: 1.2;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 0.12rem;
+}
+
+.detail-page__context-link:hover {
+  color: #000000;
+}
+
 .detail-page__eyebrow {
   margin: 0 0 1rem;
   text-transform: uppercase;
@@ -272,22 +288,6 @@
     justify-self: end;
     font-size: 0.72rem;
     padding-bottom: 0.12rem;
-  }
-
-  .detail-page__context-link {
-    width: fit-content;
-    align-self: flex-start;
-    margin-bottom: 2rem;
-    color: rgba(0, 0, 0, 0.72);
-    text-decoration: none;
-    font-size: 0.72rem;
-    line-height: 1.2;
-    border-bottom: 1px solid currentColor;
-    padding-bottom: 0.12rem;
-  }
-
-  .detail-page__context-link:hover {
-    color: #000000;
   }
 
   .detail-page__context-link:hover {
