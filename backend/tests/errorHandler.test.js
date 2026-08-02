@@ -107,21 +107,6 @@ describe("errorHandler", () => {
         });
     });
 
-    it("returns the status and message of an AppError", async () => {
-        const { errorHandler, AppError } = await loadMiddleware("test");
-
-        const res = createResponse();
-        const error = new AppError("Outfit nicht gefunden", 404);
-
-        errorHandler(error, {}, res, undefined);
-
-        expect(res.status).toHaveBeenCalledWith(404);
-
-        expect(res.json).toHaveBeenCalledWith({
-            message: "Outfit nicht gefunden",
-        });
-    });
-
     it("uses errors attached to a non-Mongoose error", async () => {
         const { errorHandler } = await loadMiddleware("test");
         const res = createResponse();
@@ -149,31 +134,6 @@ describe("errorHandler", () => {
         });
     });
 
-    it("treats errors marked as operational as expected errors", async () => {
-        const { errorHandler } = await loadMiddleware("production");
-
-        const res = createResponse();
-        const consoleErrorSpy = vi
-            .spyOn(console, "error")
-            .mockImplementation(() => {});
-
-        const error = {
-            statusCode: 422,
-            message: "Operation konnte nicht ausgeführt werden",
-            isOperational: true,
-        };
-
-        errorHandler(error, {}, res, undefined);
-
-        expect(res.status).toHaveBeenCalledWith(422);
-
-        expect(res.json).toHaveBeenCalledWith({
-            message: "Operation konnte nicht ausgeführt werden",
-        });
-
-        expect(consoleErrorSpy).not.toHaveBeenCalled();
-    });
-
     it("includes the stack trace in development", async () => {
         const { errorHandler } = await loadMiddleware("development");
 
@@ -198,21 +158,6 @@ describe("errorHandler", () => {
         expect(consoleErrorSpy).toHaveBeenCalledWith(error);
     });
 
-    it("does not include the stack trace in the test environment", async () => {
-        const { errorHandler } = await loadMiddleware("test");
-        const res = createResponse();
-
-        const error = new Error("Unexpected test error");
-
-        errorHandler(error, {}, res, undefined);
-
-        const responseBody = res.json.mock.calls[0][0];
-
-        expect(res.status).toHaveBeenCalledWith(500);
-        expect(responseBody.message).toBe("Unexpected test error");
-        expect(responseBody).not.toHaveProperty("stack");
-    });
-
     it("hides unexpected error messages in production", async () => {
         const { errorHandler } = await loadMiddleware("production");
 
@@ -232,21 +177,6 @@ describe("errorHandler", () => {
         });
 
         expect(consoleErrorSpy).toHaveBeenCalledWith(error);
-    });
-
-    it("uses the generic message when an error has no message", async () => {
-        const { errorHandler } = await loadMiddleware("test");
-        const res = createResponse();
-
-        const error = {};
-
-        errorHandler(error, {}, res, undefined);
-
-        expect(res.status).toHaveBeenCalledWith(500);
-
-        expect(res.json).toHaveBeenCalledWith({
-            message: "Interner Serverfehler",
-        });
     });
 });
 

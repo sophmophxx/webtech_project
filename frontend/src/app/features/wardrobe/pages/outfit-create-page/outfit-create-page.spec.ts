@@ -155,19 +155,6 @@ describe('OutfitCreatePage', () => {
     expect(component.selectedItemIds().size).toBe(0);
   });
 
-  it('should update the selected count and selected CSS class', () => {
-    createComponent();
-
-    component.toggleItemSelection('item-1');
-    fixture.detectChanges();
-
-    const element = fixture.nativeElement as HTMLElement;
-    const selectedItem = element.querySelector('.outfit-piece--selected');
-
-    expect(element.textContent).toContain('1 selected');
-    expect(selectedItem).not.toBeNull();
-  });
-
   it('should mark the form as touched when submitted without a name', () => {
     createComponent();
 

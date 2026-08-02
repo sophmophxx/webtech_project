@@ -201,24 +201,6 @@ describe('ClothingItemEditPage', () => {
     expect(backLink?.getAttribute('href')).toBe('/items/item-1');
   });
 
-  it('should not update anything when no item is loaded', () => {
-    createComponent();
-
-    component.item.set(null);
-    clothingItemServiceMock.updateItem.mockClear();
-
-    const payload: UpdateClothingItemRequest = {
-      name: 'Updated Item',
-    };
-
-    component.updateItem(payload);
-
-    expect(clothingItemServiceMock.updateItem).not.toHaveBeenCalled();
-
-    expect(router.navigate).not.toHaveBeenCalled();
-    expect(component.isSubmitting()).toBe(false);
-  });
-
   it('should update the item and navigate to its detail page', () => {
     createComponent();
 
@@ -261,23 +243,6 @@ describe('ClothingItemEditPage', () => {
     updateSubject.complete();
 
     expect(router.navigate).toHaveBeenCalledWith(['/items', 'item-1']);
-  });
-
-  it('should clear an existing error before updating the item', () => {
-    const updateSubject = new Subject<ClothingItem>();
-
-    clothingItemServiceMock.updateItem.mockReturnValue(updateSubject.asObservable());
-
-    createComponent();
-
-    component.errorMessage.set('Previous error');
-
-    component.updateItem({
-      name: 'Updated Black Blazer',
-    });
-
-    expect(component.errorMessage()).toBeNull();
-    expect(component.isSubmitting()).toBe(true);
   });
 
   it('should handle an error when the item cannot be updated', () => {

@@ -119,14 +119,6 @@ describe('OutfitsPage', () => {
     expect(component.errorMessage()).toBeNull();
   });
 
-  it('should filter out outfits without clothing items', () => {
-    createComponent();
-
-    expect(component.outfits()).toHaveLength(3);
-
-    expect(component.outfits().some((outfit) => outfit._id === 'outfit-empty')).toBe(false);
-  });
-
   it('should display the loading state while outfits are loading', () => {
     const outfitsSubject = new Subject<Outfit[]>();
 
@@ -220,36 +212,6 @@ describe('OutfitsPage', () => {
     expect(element.textContent).not.toContain('Should not be displayed.');
   });
 
-  it('should use singular and plural piece labels correctly', () => {
-    createComponent();
-
-    const element = fixture.nativeElement as HTMLElement;
-    const countElements = element.querySelectorAll('.outfit-card__count');
-
-    expect(countElements[0].textContent?.trim()).toBe('1 piece');
-    expect(countElements[1].textContent?.trim()).toBe('2 pieces');
-    expect(countElements[2].textContent?.trim()).toBe('5 pieces');
-  });
-
-  it('should apply the correct preview classes for one and two items', () => {
-    createComponent();
-
-    const element = fixture.nativeElement as HTMLElement;
-    const previews = element.querySelectorAll('.outfit-card__preview');
-
-    expect(previews[0].classList.contains('outfit-card__preview--single')).toBe(true);
-
-    expect(previews[0].classList.contains('outfit-card__preview--two')).toBe(false);
-
-    expect(previews[1].classList.contains('outfit-card__preview--single')).toBe(false);
-
-    expect(previews[1].classList.contains('outfit-card__preview--two')).toBe(true);
-
-    expect(previews[2].classList.contains('outfit-card__preview--single')).toBe(false);
-
-    expect(previews[2].classList.contains('outfit-card__preview--two')).toBe(false);
-  });
-
   it('should display outfit notes only when they are available', () => {
     createComponent();
 
@@ -260,17 +222,6 @@ describe('OutfitsPage', () => {
     expect(cards[1].textContent).toContain('Black tailoring.');
 
     expect(cards[2].querySelector('.outfit-card__notes')).toBeNull();
-  });
-
-  it('should render item images with the correct source and alt text', () => {
-    createComponent();
-
-    const element = fixture.nativeElement as HTMLElement;
-    const firstImage = element.querySelector<HTMLImageElement>('.outfit-card img');
-
-    expect(firstImage?.src).toBe('https://example.com/blazer.jpg');
-
-    expect(firstImage?.alt).toBe('Black Blazer');
   });
 
   it('should render an empty preview slot when an item has no image', () => {

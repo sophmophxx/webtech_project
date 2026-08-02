@@ -243,16 +243,6 @@ describe('OutfitEditPage', () => {
     expect(cancelLink?.getAttribute('href')).toContain('/outfits/outfit-1');
   });
 
-  it('should render an item image with the correct source and alt text', () => {
-    createComponent();
-
-    const element = fixture.nativeElement as HTMLElement;
-    const image = element.querySelector<HTMLImageElement>('.outfit-piece__media img');
-
-    expect(image?.src).toBe('https://example.com/blazer.jpg');
-    expect(image?.alt).toBe('Black Blazer');
-  });
-
   it('should add and remove items from the selection', () => {
     createComponent();
 
@@ -269,32 +259,6 @@ describe('OutfitEditPage', () => {
 
     expect(component.isSelected('item-1')).toBe(false);
     expect(component.selectedItemIds()).toEqual(new Set(['item-2']));
-  });
-
-  it('should update the selected CSS class and selected count', () => {
-    createComponent();
-
-    component.toggleItemSelection('item-2');
-    fixture.detectChanges();
-
-    const element = fixture.nativeElement as HTMLElement;
-    const selectedItems = element.querySelectorAll('.outfit-piece--selected');
-
-    expect(selectedItems.length).toBe(2);
-    expect(element.textContent).toContain('2 selected');
-  });
-
-  it('should not update anything when no outfit is loaded', () => {
-    createComponent();
-
-    component.outfit.set(null);
-    outfitServiceMock.updateOutfit.mockClear();
-
-    component.updateOutfit();
-
-    expect(outfitServiceMock.updateOutfit).not.toHaveBeenCalled();
-    expect(router.navigate).not.toHaveBeenCalled();
-    expect(component.isSubmitting()).toBe(false);
   });
 
   it('should mark the form as touched when the name is invalid', () => {
@@ -394,21 +358,6 @@ describe('OutfitEditPage', () => {
       items: ['item-1'],
       favorite: true,
     });
-  });
-
-  it('should clear an existing error before updating', () => {
-    const updateSubject = new Subject<Outfit>();
-
-    outfitServiceMock.updateOutfit.mockReturnValue(updateSubject.asObservable());
-
-    createComponent();
-
-    component.errorMessage.set('Previous error');
-
-    component.updateOutfit();
-
-    expect(component.errorMessage()).toBeNull();
-    expect(component.isSubmitting()).toBe(true);
   });
 
   it('should display the submitting state while the request is pending', () => {

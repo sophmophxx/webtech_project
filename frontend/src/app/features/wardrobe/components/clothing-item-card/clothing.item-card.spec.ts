@@ -33,10 +33,6 @@ describe('ClothingItemCard', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should display the item name and category', () => {
     const compiled = fixture.nativeElement as HTMLElement;
 

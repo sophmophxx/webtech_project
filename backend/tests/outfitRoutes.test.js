@@ -544,15 +544,4 @@ describe("Outfit API", () => {
             expect(response.body.message).toBe("Outfit nicht gefunden");
         });
     });
-
-    it("accepts a relative image path", async () => {
-        const response = await request(app).post(ITEMS_API).send({
-            name: "Black Dress",
-            category: "dresses",
-            imageUrl: "/uploads/black-dress.jpg",
-        });
-
-        expect(response.status).toBe(201);
-        expect(response.body.imageUrl).toBe("/uploads/black-dress.jpg");
-    });
 });

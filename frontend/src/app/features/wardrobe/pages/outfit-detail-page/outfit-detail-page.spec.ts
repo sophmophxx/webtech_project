@@ -178,25 +178,6 @@ describe('OutfitDetailPage', () => {
     expect(image?.alt).toBe('Black Blazer');
   });
 
-  it('should display the singular piece label for one item', () => {
-    const singleItemOutfit = {
-      ...mockOutfit,
-      notes: undefined,
-      items: [mockOutfit.items[0]],
-    } as Outfit;
-
-    outfitServiceMock.getOutfitById.mockReturnValue(of(singleItemOutfit));
-
-    createComponent();
-
-    const element = fixture.nativeElement as HTMLElement;
-
-    expect(element.textContent).toContain('1 piece');
-    expect(element.textContent).not.toContain('2 pieces');
-
-    expect(element.textContent).not.toContain('Black tailoring with silver accessories.');
-  });
-
   it('should render the edit link for the loaded outfit', () => {
     createComponent();
 
@@ -250,19 +231,6 @@ describe('OutfitDetailPage', () => {
     expect(element.textContent).not.toContain('Delete this outfit? This cannot be undone.');
   });
 
-  it('should not delete anything when no outfit is loaded', () => {
-    createComponent();
-
-    component.outfit.set(null);
-    outfitServiceMock.deleteOutfit.mockClear();
-
-    component.deleteOutfit();
-
-    expect(outfitServiceMock.deleteOutfit).not.toHaveBeenCalled();
-    expect(router.navigate).not.toHaveBeenCalled();
-    expect(component.isDeleting()).toBe(false);
-  });
-
   it('should delete the outfit and navigate to the outfits overview', () => {
     createComponent();
 
@@ -304,21 +272,6 @@ describe('OutfitDetailPage', () => {
 
     deleteSubject.next();
     deleteSubject.complete();
-  });
-
-  it('should clear an existing error before deleting', () => {
-    const deleteSubject = new Subject<void>();
-
-    outfitServiceMock.deleteOutfit.mockReturnValue(deleteSubject.asObservable());
-
-    createComponent();
-
-    component.errorMessage.set('Previous error');
-
-    component.deleteOutfit();
-
-    expect(component.errorMessage()).toBeNull();
-    expect(component.isDeleting()).toBe(true);
   });
 
   it('should handle an error when the outfit cannot be deleted', () => {

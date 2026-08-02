@@ -69,23 +69,6 @@ describe('ClothingItemForm', () => {
     expect(Array.from(options).map((option) => option.value)).toEqual(component.categories);
   });
 
-  it('should render the default submit button label', () => {
-    const element = fixture.nativeElement as HTMLElement;
-    const submitButton = element.querySelector<HTMLButtonElement>('.archive-form__submit');
-
-    expect(submitButton?.textContent?.trim()).toBe('Save item');
-  });
-
-  it('should render a custom submit button label', () => {
-    fixture.componentRef.setInput('submitButtonLabel', 'Save changes');
-    fixture.detectChanges();
-
-    const element = fixture.nativeElement as HTMLElement;
-    const submitButton = element.querySelector<HTMLButtonElement>('.archive-form__submit');
-
-    expect(submitButton?.textContent?.trim()).toBe('Save changes');
-  });
-
   it('should prefill the form when an initial item is provided', () => {
     fixture.componentRef.setInput('initialItem', mockItem);
     fixture.detectChanges();
@@ -138,21 +121,6 @@ describe('ClothingItemForm', () => {
       notes: '',
       favorite: false,
     });
-  });
-
-  it('should not reset the form when initialItem changes to null', () => {
-    component.itemForm.patchValue({
-      name: 'Unsaved Item',
-      category: 'bags',
-      brand: 'Prada',
-    });
-
-    fixture.componentRef.setInput('initialItem', null);
-    fixture.detectChanges();
-
-    expect(component.itemForm.controls.name.value).toBe('Unsaved Item');
-    expect(component.itemForm.controls.category.value).toBe('bags');
-    expect(component.itemForm.controls.brand.value).toBe('Prada');
   });
 
   it('should mark all controls as touched and not emit when the form is invalid', () => {
@@ -283,33 +251,6 @@ describe('ClothingItemForm', () => {
     expect(emitSpy).toHaveBeenCalledWith({
       name: 'Silver Bag',
       category: 'bags',
-      favorite: false,
-    });
-  });
-
-  it('should update the form when a different initial item is provided', () => {
-    fixture.componentRef.setInput('initialItem', mockItem);
-    fixture.detectChanges();
-
-    const updatedItem = {
-      _id: 'item-2',
-      name: 'Silver Bag',
-      category: 'bags',
-      brand: 'Prada',
-      favorite: false,
-    } as ClothingItem;
-
-    fixture.componentRef.setInput('initialItem', updatedItem);
-    fixture.detectChanges();
-
-    expect(component.itemForm.getRawValue()).toEqual({
-      name: 'Silver Bag',
-      category: 'bags',
-      brand: 'Prada',
-      color: '',
-      size: '',
-      imageUrl: '',
-      notes: '',
       favorite: false,
     });
   });

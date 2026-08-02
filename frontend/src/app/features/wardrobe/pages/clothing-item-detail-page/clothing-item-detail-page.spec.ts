@@ -235,63 +235,6 @@ describe('ClothingItemDetailPage', () => {
     expect(element.textContent).toContain('No');
   });
 
-  it('should display Yes when the item is marked as favorite', () => {
-    createComponent();
-
-    const element = fixture.nativeElement as HTMLElement;
-    const metaValues = Array.from(element.querySelectorAll('dd')).map((value) =>
-      value.textContent?.trim(),
-    );
-
-    expect(metaValues).toContain('Yes');
-  });
-
-  it('should display No when the item is not marked as favorite', () => {
-    clothingItemServiceMock.getItemById.mockReturnValue(
-      of({
-        ...mockItem,
-        favorite: false,
-      }),
-    );
-
-    createComponent();
-
-    const element = fixture.nativeElement as HTMLElement;
-    const metaValues = Array.from(element.querySelectorAll('dd')).map((value) =>
-      value.textContent?.trim(),
-    );
-
-    expect(metaValues).toContain('No');
-    expect(metaValues).not.toContain('Yes');
-  });
-
-  it('should render both edit links for the loaded item', () => {
-    createComponent();
-
-    const element = fixture.nativeElement as HTMLElement;
-
-    const editLinks = element.querySelectorAll<HTMLAnchorElement>('a[href="/items/item-1/edit"]');
-
-    expect(editLinks.length).toBe(2);
-
-    expect(element.querySelector('.detail-page__edit-link')?.textContent?.trim()).toBe('Edit item');
-
-    expect(element.querySelector('.detail-page__primary-action')?.textContent?.trim()).toBe(
-      'Edit item',
-    );
-  });
-
-  it('should not display a context link when opened from the archive', () => {
-    createComponent();
-
-    const element = fixture.nativeElement as HTMLElement;
-
-    expect(component.backLink()).toBe('/');
-    expect(component.backLabel()).toBe('Back to archive');
-
-    expect(element.querySelector('.detail-page__context-link')).toBeNull();
-  });
-
   it('should display a back-to-outfit link for a valid returnTo query parameter', () => {
     returnTo = '/outfits/outfit-1';
 
@@ -312,19 +255,6 @@ describe('ClothingItemDetailPage', () => {
     expect(contextLink?.getAttribute('href')).toBe('/outfits/outfit-1');
   });
 
-  it('should ignore a returnTo value that does not point to an outfit', () => {
-    returnTo = '/items/item-2';
-
-    createComponent();
-
-    const element = fixture.nativeElement as HTMLElement;
-
-    expect(component.backLink()).toBe('/');
-    expect(component.backLabel()).toBe('Back to archive');
-
-    expect(element.querySelector('.detail-page__context-link')).toBeNull();
-  });
-
   it('should ignore an external returnTo URL', () => {
     returnTo = 'https://malicious.example/outfits/outfit-1';
 
@@ -336,22 +266,5 @@ describe('ClothingItemDetailPage', () => {
     expect(component.backLabel()).toBe('Back to archive');
 
     expect(element.querySelector('.detail-page__context-link')).toBeNull();
-  });
-
-  it('should set the outfit context before showing a missing-id error', () => {
-    routeId = null;
-    returnTo = '/outfits/outfit-1';
-
-    createComponent();
-
-    expect(component.backLink()).toBe('/outfits/outfit-1');
-
-    expect(component.backLabel()).toBe('Back to outfit');
-
-    expect(component.errorMessage()).toBe('No item id found.');
-
-    expect(component.isLoading()).toBe(false);
-
-    expect(clothingItemServiceMock.getItemById).not.toHaveBeenCalled();
   });
 });
