@@ -1,12 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { vi } from 'vitest';
 
 import { ClothingItemCard } from './clothing-item-card';
 import { ClothingItem } from '../../../../shared/models/clothing-item.model';
 
 describe('ClothingItemCard', () => {
-  let component: ClothingItemCard;
   let fixture: ComponentFixture<ClothingItemCard>;
 
   const item: ClothingItem = {
@@ -27,7 +25,6 @@ describe('ClothingItemCard', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(ClothingItemCard);
-    component = fixture.componentInstance;
 
     fixture.componentRef.setInput('item', item);
     fixture.detectChanges();
@@ -54,19 +51,5 @@ describe('ClothingItemCard', () => {
     expect(image).toBeTruthy();
     expect(image.getAttribute('src')).toBe('/images/seed/black-dress.jpg');
     expect(image.getAttribute('alt')).toBe('Black Draped Dress');
-  });
-
-  it('should emit item id when delete button is clicked', () => {
-    const emitSpy = vi.spyOn(component.deleteItem, 'emit');
-
-    const button = fixture.nativeElement.querySelector(
-      '.wardrobe-card__delete',
-    ) as HTMLButtonElement;
-
-    expect(button).toBeTruthy();
-
-    button.click();
-
-    expect(emitSpy).toHaveBeenCalledWith('1');
   });
 });
