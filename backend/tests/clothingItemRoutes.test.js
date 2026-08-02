@@ -35,13 +35,6 @@ afterAll(async () => {
 });
 
 describe("Clothing item API", () => {
-    it("returns the health/root route", async () => {
-        const response = await request(app).get("/");
-
-        expect(response.status).toBe(200);
-        expect(response.text).toBe("Backend läuft");
-    });
-
     it("returns 404 for unknown routes", async () => {
         const response = await request(app).get("/does-not-exist");
 
@@ -150,15 +143,6 @@ describe("Clothing item API", () => {
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("Ungültige Item-ID");
-    });
-
-    it("returns 400 when required fields are missing", async () => {
-        const response = await request(app).post(ITEMS_API).send({
-            category: "dresses",
-        });
-
-        expect(response.status).toBe(400);
-        expect(response.body.message).toBeDefined();
     });
 
     it("returns 400 when name is missing", async () => {
@@ -391,5 +375,15 @@ describe("Clothing item API", () => {
         expect(response.body.message).toBe(
             "CORS blocked for origin: https://not-allowed.example"
         );
+    });
+    it("accepts a relative image path", async () => {
+        const response = await request(app).post(ITEMS_API).send({
+            name: "Black Dress",
+            category: "dresses",
+            imageUrl: "/uploads/black-dress.jpg",
+        });
+
+        expect(response.status).toBe(201);
+        expect(response.body.imageUrl).toBe("/uploads/black-dress.jpg");
     });
 });

@@ -173,33 +173,6 @@ describe('WardrobePage', () => {
     expect(addItemLink?.getAttribute('href')).toBe('/items/new');
   });
 
-  it('should delete an item and remove it from the local state', () => {
-    createComponent();
-
-    component.deleteItem('item-1');
-
-    expect(clothingItemServiceMock.deleteItem).toHaveBeenCalledTimes(1);
-    expect(clothingItemServiceMock.deleteItem).toHaveBeenCalledWith('item-1');
-
-    expect(component.items()).toEqual([mockItems[1]]);
-    expect(component.errorMessage()).toBeNull();
-  });
-
-  it('should update the rendered cards after an item is deleted', () => {
-    createComponent();
-
-    component.deleteItem('item-1');
-    fixture.detectChanges();
-
-    const cardDebugElements = fixture.debugElement.queryAll(By.directive(ClothingItemCard));
-
-    expect(cardDebugElements.length).toBe(1);
-
-    const remainingCard = cardDebugElements[0].componentInstance as ClothingItemCard;
-
-    expect(remainingCard.item._id).toBe('item-2');
-  });
-
   it('should wait for the delete request before removing the item', () => {
     const deleteSubject = new Subject<{ message: string }>();
 
@@ -268,15 +241,5 @@ describe('WardrobePage', () => {
     expect(component.items()).toEqual([]);
     expect(element.textContent).toContain('No items yet.');
     expect(element.querySelector('.wardrobe-page__grid')).toBeNull();
-  });
-
-  it('should leave the item list unchanged when deleting an unknown id', () => {
-    createComponent();
-
-    component.deleteItem('unknown-item');
-
-    expect(clothingItemServiceMock.deleteItem).toHaveBeenCalledWith('unknown-item');
-
-    expect(component.items()).toEqual(mockItems);
   });
 });

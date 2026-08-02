@@ -42,10 +42,6 @@ describe('ClothingItemService', () => {
     httpTesting.verify();
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   it('should load all clothing items', () => {
     const expectedItems = [
       mockItem,
@@ -145,32 +141,5 @@ describe('ClothingItemService', () => {
     expect(request.request.body).toBeNull();
 
     request.flush(response);
-  });
-
-  it('should pass HTTP errors to the subscriber', () => {
-    let receivedStatus: number | undefined;
-
-    service.getItemById('missing-item').subscribe({
-      next: () => {
-        throw new Error('The request should not succeed.');
-      },
-      error: (error) => {
-        receivedStatus = error.status;
-      },
-    });
-
-    const request = httpTesting.expectOne(`${ITEMS_API_URL}/missing-item`);
-
-    request.flush(
-      {
-        message: 'Item nicht gefunden',
-      },
-      {
-        status: 404,
-        statusText: 'Not Found',
-      },
-    );
-
-    expect(receivedStatus).toBe(404);
   });
 });

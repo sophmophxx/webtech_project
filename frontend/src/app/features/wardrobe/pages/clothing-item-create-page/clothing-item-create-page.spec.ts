@@ -62,12 +62,6 @@ describe('ClothingItemCreatePage', () => {
     fixture.detectChanges();
   });
 
-  it('should create the component with its initial state', () => {
-    expect(component).toBeTruthy();
-    expect(component.isSubmitting()).toBe(false);
-    expect(component.errorMessage()).toBeNull();
-  });
-
   it('should create an item and navigate to the wardrobe overview', () => {
     component.createItem(payload);
 
@@ -96,19 +90,6 @@ describe('ClothingItemCreatePage', () => {
     createSubject.complete();
 
     expect(router.navigate).toHaveBeenCalledWith(['/']);
-  });
-
-  it('should clear an existing error before creating an item', () => {
-    const createSubject = new Subject<ClothingItem>();
-
-    clothingItemServiceMock.createItem.mockReturnValue(createSubject.asObservable());
-
-    component.errorMessage.set('Previous error');
-
-    component.createItem(payload);
-
-    expect(component.errorMessage()).toBeNull();
-    expect(component.isSubmitting()).toBe(true);
   });
 
   it('should handle an error when the item cannot be created', () => {

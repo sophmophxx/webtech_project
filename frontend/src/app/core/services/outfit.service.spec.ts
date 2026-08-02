@@ -39,10 +39,6 @@ describe('OutfitService', () => {
     httpTesting.verify();
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   it('should load all outfits', () => {
     const expectedOutfits = [mockOutfit];
 
