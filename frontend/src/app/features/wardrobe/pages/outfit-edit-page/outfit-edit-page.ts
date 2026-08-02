@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -8,10 +8,14 @@ import { ClothingItemService } from '../../../../core/services/clothing-item.ser
 import { OutfitService, UpdateOutfitRequest } from '../../../../core/services/outfit.service';
 import { ClothingItem } from '../../../../shared/models/clothing-item.model';
 import { Outfit } from '../../../../shared/models/outfit.model';
+import {
+  CategoryFilter,
+  CategoryFilterValue,
+} from '../../components/category-filter/category-filter';
 
 @Component({
   selector: 'app-outfit-edit-page',
-  imports: [RouterLink, ReactiveFormsModule, MatProgressSpinnerModule],
+  imports: [RouterLink, ReactiveFormsModule, MatProgressSpinnerModule, CategoryFilter],
   templateUrl: './outfit-edit-page.html',
   styleUrl: '../outfit-create-page/outfit-create-page.scss',
 })
@@ -25,6 +29,16 @@ export class OutfitEditPage implements OnInit {
   readonly outfit = signal<Outfit | null>(null);
   readonly items = signal<ClothingItem[]>([]);
   readonly selectedItemIds = signal<Set<string>>(new Set());
+
+  readonly selectedCategory = signal<CategoryFilterValue>('all');
+
+  readonly filteredItems = computed(() => {
+    const category = this.selectedCategory();
+
+    return category === 'all'
+      ? this.items()
+      : this.items().filter((item) => item.category === category);
+  });
 
   readonly isLoading = signal(true);
   readonly isSubmitting = signal(false);
@@ -50,6 +64,13 @@ export class OutfitEditPage implements OnInit {
     }
 
     this.loadEditorData(outfitId);
+  }
+
+  /**
+   * Updates the category used to filter the available outfit pieces.
+   */
+  setCategory(category: CategoryFilterValue): void {
+    this.selectedCategory.set(category);
   }
 
   /**

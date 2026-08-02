@@ -19,7 +19,6 @@
       A refined overview of your personal pieces — collected, editable, and thoughtfully curated.
     </p>
   </section>
-
   @if (isLoading()) {
     <div class="wardrobe-page__state">
       <mat-spinner diameter="40" />
@@ -36,10 +35,23 @@
       <p>No items yet.</p>
     </div>
   } @else {
-    <div class="wardrobe-page__grid">
-      @for (item of items(); track item._id) {
-        <app-clothing-item-card [item]="item" />
-      }
-    </div>
+    <app-category-filter
+      ariaLabel="Filter wardrobe by category"
+      [selectedCategory]="selectedCategory()"
+      (categoryChange)="setCategory($event)"
+    />
+
+    @if (filteredItems().length === 0) {
+      <div class="wardrobe-page__state">
+        <mat-icon>checkroom</mat-icon>
+        <p>No items in this category.</p>
+      </div>
+    } @else {
+      <div class="wardrobe-page__grid">
+        @for (item of filteredItems(); track item._id) {
+          <app-clothing-item-card [item]="item" />
+        }
+      </div>
+    }
   }
 </section>

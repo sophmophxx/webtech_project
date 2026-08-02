@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -6,10 +6,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ClothingItemService } from '../../../../core/services/clothing-item.service';
 import { CreateOutfitRequest, OutfitService } from '../../../../core/services/outfit.service';
 import { ClothingItem } from '../../../../shared/models/clothing-item.model';
+import {
+  CategoryFilter,
+  CategoryFilterValue,
+} from '../../components/category-filter/category-filter';
 
 @Component({
   selector: 'app-outfit-create-page',
-  imports: [RouterLink, ReactiveFormsModule, MatProgressSpinnerModule],
+  imports: [RouterLink, ReactiveFormsModule, MatProgressSpinnerModule, CategoryFilter],
   templateUrl: './outfit-create-page.html',
   styleUrl: './outfit-create-page.scss',
 })
@@ -21,6 +25,14 @@ export class OutfitCreatePage implements OnInit {
 
   readonly items = signal<ClothingItem[]>([]);
   readonly selectedItemIds = signal<Set<string>>(new Set());
+  readonly selectedCategory = signal<CategoryFilterValue>('all');
+  readonly filteredItems = computed(() => {
+    const category = this.selectedCategory();
+
+    return category === 'all'
+      ? this.items()
+      : this.items().filter((item) => item.category === category);
+  });
 
   readonly isLoading = signal(true);
   readonly isSubmitting = signal(false);
@@ -38,6 +50,13 @@ export class OutfitCreatePage implements OnInit {
    */
   ngOnInit(): void {
     this.loadItems();
+  }
+
+  /**
+   * Updates the category used to filter the available outfit pieces.
+   */
+  setCategory(category: CategoryFilterValue): void {
+    this.selectedCategory.set(category);
   }
 
   /**

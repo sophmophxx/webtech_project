@@ -148,26 +148,6 @@
   color: rgba(0, 0, 0, 0.72);
 }
 
-.detail-page__primary-action {
-  align-self: flex-start;
-  margin-top: 2rem;
-  border: 1px solid rgba(0, 0, 0, 0.85);
-  padding: 0.85rem 1.4rem;
-  color: #000000;
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.76rem;
-  transition:
-    background-color 160ms ease,
-    color 160ms ease;
-}
-
-.detail-page__primary-action:hover {
-  background: #000000;
-  color: #ffffff;
-}
-
 .detail-page__state {
   min-height: calc(100vh - 56px);
   display: grid;

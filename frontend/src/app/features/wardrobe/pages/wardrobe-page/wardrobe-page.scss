@@ -158,4 +158,7 @@ app-clothing-item-card {
     max-width: 290px;
     font-size: 0.82rem;
   }
+  .wardrobe-page app-category-filter {
+    --category-filter-mobile-padding: 1.25rem;
+  }
 }

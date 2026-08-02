@@ -398,4 +398,27 @@ describe('OutfitEditPage', () => {
 
     expect(element.textContent).toContain('Outfit could not be updated.');
   });
+
+  it('should filter available pieces without clearing the existing selection', () => {
+    createComponent();
+
+    const element = fixture.nativeElement as HTMLElement;
+    const bottomsFilter = element.querySelector<HTMLButtonElement>('[data-category="bottoms"]');
+
+    bottomsFilter?.click();
+    fixture.detectChanges();
+
+    const itemButtons = element.querySelectorAll('.outfit-piece');
+
+    expect(component.selectedCategory()).toBe('bottoms');
+    expect(component.filteredItems()).toEqual([mockItems[1]]);
+
+    // Das bereits im Outfit enthaltene Item bleibt ausgewählt,
+    // auch wenn es durch den Filter gerade nicht angezeigt wird.
+    expect(component.isSelected('item-1')).toBe(true);
+    expect(component.selectedItemIds()).toEqual(new Set(['item-1']));
+
+    expect(itemButtons.length).toBe(1);
+    expect(itemButtons[0].textContent).toContain('Wide Leg Trousers');
+  });
 });

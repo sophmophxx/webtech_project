@@ -77,10 +77,6 @@
           </div>
         </dl>
 
-        <a class="detail-page__primary-action" [routerLink]="['/items', item._id, 'edit']">
-          Edit item
-        </a>
-
         <div class="detail-page__delete-area" aria-live="polite">
           @if (deleteErrorMessage(); as deleteError) {
             <p class="detail-page__delete-error" role="alert">
