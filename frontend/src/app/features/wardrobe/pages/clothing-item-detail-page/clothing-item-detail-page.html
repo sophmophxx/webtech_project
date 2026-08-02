@@ -80,6 +80,45 @@
         <a class="detail-page__primary-action" [routerLink]="['/items', item._id, 'edit']">
           Edit item
         </a>
+
+        <div class="detail-page__delete-area" aria-live="polite">
+          @if (deleteErrorMessage(); as deleteError) {
+            <p class="detail-page__delete-error" role="alert">
+              {{ deleteError }}
+            </p>
+          }
+
+          @if (showDeleteConfirmation()) {
+            <p class="detail-page__delete-warning">
+              Delete this item? It will also be removed from saved outfits. Outfits without any
+              remaining pieces will be deleted. This cannot be undone.
+            </p>
+
+            <div class="detail-page__delete-actions">
+              <button
+                class="detail-page__delete-button"
+                type="button"
+                [disabled]="isDeleting()"
+                (click)="deleteItem()"
+              >
+                {{ isDeleting() ? 'Deleting...' : 'Confirm delete' }}
+              </button>
+
+              <button
+                class="detail-page__cancel-button"
+                type="button"
+                [disabled]="isDeleting()"
+                (click)="cancelDelete()"
+              >
+                Cancel
+              </button>
+            </div>
+          } @else {
+            <button class="detail-page__delete-button" type="button" (click)="requestDelete()">
+              Delete item
+            </button>
+          }
+        </div>
       </section>
     </main>
   }

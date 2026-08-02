@@ -1,14 +1,12 @@
-import { Component, Input, inject, output } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
 
 import { ClothingItem } from '../../../../shared/models/clothing-item.model';
 
 @Component({
   selector: 'app-clothing-item-card',
-  imports: [MatButtonModule, MatCardModule, MatIconModule],
+  imports: [MatCardModule],
   templateUrl: './clothing-item-card.html',
   styleUrl: './clothing-item-card.scss',
 })
@@ -16,8 +14,6 @@ export class ClothingItemCard {
   private readonly router = inject(Router);
 
   @Input({ required: true }) item!: ClothingItem;
-
-  readonly deleteItem = output<string>();
 
   /**
    * Navigates to the detail page of the selected clothing item.
@@ -35,13 +31,5 @@ export class ClothingItemCard {
       event.preventDefault();
       this.openDetails();
     }
-  }
-
-  /**
-   * Emits the item id to the parent component without triggering card navigation.
-   */
-  onDeleteClick(event: MouseEvent): void {
-    event.stopPropagation();
-    this.deleteItem.emit(this.item._id);
   }
 }

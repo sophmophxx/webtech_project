@@ -38,15 +38,12 @@ describe('WardrobePage', () => {
 
   const clothingItemServiceMock = {
     getItems: vi.fn(),
-    deleteItem: vi.fn(),
   };
 
   beforeEach(async () => {
     clothingItemServiceMock.getItems.mockReset();
-    clothingItemServiceMock.deleteItem.mockReset();
 
     clothingItemServiceMock.getItems.mockReturnValue(of(mockItems));
-    clothingItemServiceMock.deleteItem.mockReturnValue(of({ message: 'Item gelöscht' }));
 
     await TestBed.configureTestingModule({
       imports: [WardrobePage],
@@ -171,75 +168,5 @@ describe('WardrobePage', () => {
 
     expect(addItemLink?.textContent?.trim()).toBe('Add item');
     expect(addItemLink?.getAttribute('href')).toBe('/items/new');
-  });
-
-  it('should wait for the delete request before removing the item', () => {
-    const deleteSubject = new Subject<{ message: string }>();
-
-    clothingItemServiceMock.deleteItem.mockReturnValue(deleteSubject.asObservable());
-
-    createComponent();
-
-    component.deleteItem('item-1');
-
-    expect(component.items()).toEqual(mockItems);
-
-    deleteSubject.next({ message: 'Item gelöscht' });
-    deleteSubject.complete();
-
-    expect(component.items()).toEqual([mockItems[1]]);
-  });
-
-  it('should display an error when an item cannot be deleted', () => {
-    clothingItemServiceMock.deleteItem.mockReturnValue(
-      throwError(() => new Error('Delete failed')),
-    );
-
-    createComponent();
-
-    component.deleteItem('item-1');
-    fixture.detectChanges();
-
-    const element = fixture.nativeElement as HTMLElement;
-
-    expect(clothingItemServiceMock.deleteItem).toHaveBeenCalledWith('item-1');
-
-    expect(component.items()).toEqual(mockItems);
-    expect(component.errorMessage()).toBe('Item could not be deleted.');
-
-    expect(element.textContent).toContain('Item could not be deleted.');
-
-    expect(element.querySelector('.wardrobe-page__state--error')).not.toBeNull();
-
-    expect(element.querySelector('.wardrobe-page__grid')).toBeNull();
-  });
-
-  it('should handle a delete event emitted by a clothing item card', () => {
-    createComponent();
-
-    const cardDebugElements = fixture.debugElement.queryAll(By.directive(ClothingItemCard));
-
-    const firstCard = cardDebugElements[0].componentInstance as ClothingItemCard;
-
-    firstCard.deleteItem.emit('item-1');
-
-    expect(clothingItemServiceMock.deleteItem).toHaveBeenCalledWith('item-1');
-
-    expect(component.items()).toEqual([mockItems[1]]);
-  });
-
-  it('should display the empty state after the last item is deleted', () => {
-    clothingItemServiceMock.getItems.mockReturnValue(of([mockItems[0]]));
-
-    createComponent();
-
-    component.deleteItem('item-1');
-    fixture.detectChanges();
-
-    const element = fixture.nativeElement as HTMLElement;
-
-    expect(component.items()).toEqual([]);
-    expect(element.textContent).toContain('No items yet.');
-    expect(element.querySelector('.wardrobe-page__grid')).toBeNull();
   });
 });

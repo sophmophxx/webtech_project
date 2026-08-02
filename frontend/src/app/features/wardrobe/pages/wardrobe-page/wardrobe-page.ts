@@ -28,21 +28,6 @@ export class WardrobePage implements OnInit {
   }
 
   /**
-   * Deletes a clothing item through the API.
-   * After a successful deletion, the item is removed from the local page state.
-   */
-  deleteItem(id: string): void {
-    this.clothingItemService.deleteItem(id).subscribe({
-      next: () => {
-        this.items.update((items) => items.filter((item) => item._id !== id));
-      },
-      error: () => {
-        this.errorMessage.set('Item could not be deleted.');
-      },
-    });
-  }
-
-  /**
    * Loads all clothing items from the API and updates loading and error states.
    */
   private loadItems(): void {

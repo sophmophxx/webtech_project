@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { ClothingItemService } from '../../../../core/services/clothing-item.service';
@@ -13,6 +13,7 @@ import { ClothingItem } from '../../../../shared/models/clothing-item.model';
 })
 export class ClothingItemDetailPage implements OnInit {
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly clothingItemService = inject(ClothingItemService);
 
   readonly item = signal<ClothingItem | null>(null);
@@ -20,6 +21,9 @@ export class ClothingItemDetailPage implements OnInit {
   readonly errorMessage = signal<string | null>(null);
   readonly backLink = signal('/');
   readonly backLabel = signal('Back to archive');
+  readonly showDeleteConfirmation = signal(false);
+  readonly isDeleting = signal(false);
+  readonly deleteErrorMessage = signal<string | null>(null);
 
   /**
    * Reads the item id from the route and loads the matching clothing item.
@@ -55,6 +59,49 @@ export class ClothingItemDetailPage implements OnInit {
       error: () => {
         this.errorMessage.set('Item could not be loaded.');
         this.isLoading.set(false);
+      },
+    });
+  }
+
+  /**
+   * Shows the delete confirmation for the current item.
+   */
+  requestDelete(): void {
+    this.deleteErrorMessage.set(null);
+    this.showDeleteConfirmation.set(true);
+  }
+
+  /**
+   * Hides the delete confirmation without deleting the item.
+   */
+  cancelDelete(): void {
+    this.showDeleteConfirmation.set(false);
+    this.deleteErrorMessage.set(null);
+  }
+
+  /**
+   * Deletes the current item and navigates back to the archive.
+   *
+   * The backend also removes the item from referenced outfits
+   * and deletes outfits that no longer contain any items.
+   */
+  deleteItem(): void {
+    const currentItem = this.item();
+
+    if (!currentItem) {
+      return;
+    }
+
+    this.isDeleting.set(true);
+    this.deleteErrorMessage.set(null);
+
+    this.clothingItemService.deleteItem(currentItem._id).subscribe({
+      next: () => {
+        void this.router.navigate(['/']);
+      },
+      error: () => {
+        this.deleteErrorMessage.set('Item could not be deleted.');
+        this.isDeleting.set(false);
       },
     });
   }

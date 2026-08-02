@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
+import { ActivatedRoute, convertToParamMap, provideRouter, Router } from '@angular/router';
 import { of, Subject, throwError } from 'rxjs';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ClothingItemDetailPage } from './clothing-item-detail-page';
 import { ClothingItemService } from '../../../../core/services/clothing-item.service';
@@ -10,6 +10,7 @@ import { ClothingItem } from '../../../../shared/models/clothing-item.model';
 describe('ClothingItemDetailPage', () => {
   let fixture: ComponentFixture<ClothingItemDetailPage>;
   let component: ClothingItemDetailPage;
+  let router: Router;
 
   let routeId: string | null;
   let returnTo: string | null;
@@ -30,6 +31,7 @@ describe('ClothingItemDetailPage', () => {
 
   const clothingItemServiceMock = {
     getItemById: vi.fn(),
+    deleteItem: vi.fn(),
   };
 
   const activatedRouteMock = {
@@ -49,7 +51,14 @@ describe('ClothingItemDetailPage', () => {
     returnTo = null;
 
     clothingItemServiceMock.getItemById.mockReset();
+    clothingItemServiceMock.deleteItem.mockReset();
+
     clothingItemServiceMock.getItemById.mockReturnValue(of(mockItem));
+    clothingItemServiceMock.deleteItem.mockReturnValue(
+      of({
+        message: 'Item gelöscht',
+      }),
+    );
 
     await TestBed.configureTestingModule({
       imports: [ClothingItemDetailPage],
@@ -65,6 +74,12 @@ describe('ClothingItemDetailPage', () => {
         },
       ],
     }).compileComponents();
+
+    router = TestBed.inject(Router);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   function createComponent(): void {
@@ -79,7 +94,6 @@ describe('ClothingItemDetailPage', () => {
     expect(component).toBeTruthy();
 
     expect(clothingItemServiceMock.getItemById).toHaveBeenCalledTimes(1);
-
     expect(clothingItemServiceMock.getItemById).toHaveBeenCalledWith('item-1');
 
     expect(component.item()).toEqual(mockItem);
@@ -101,7 +115,6 @@ describe('ClothingItemDetailPage', () => {
 
     expect(component.isLoading()).toBe(true);
     expect(element.textContent).toContain('Loading item...');
-
     expect(element.querySelector('.detail-page__content')).toBeNull();
 
     itemSubject.next(mockItem);
@@ -112,7 +125,6 @@ describe('ClothingItemDetailPage', () => {
     expect(component.isLoading()).toBe(false);
     expect(element.textContent).not.toContain('Loading item...');
     expect(element.textContent).toContain('Black Blazer');
-
     expect(element.querySelector('.detail-page__content')).not.toBeNull();
   });
 
@@ -130,9 +142,7 @@ describe('ClothingItemDetailPage', () => {
     expect(component.errorMessage()).toBe('No item id found.');
 
     expect(element.textContent).toContain('No item id found.');
-
     expect(element.querySelector('.detail-page__edit-link')).toBeNull();
-
     expect(element.querySelector('.detail-page__content')).toBeNull();
   });
 
@@ -145,11 +155,9 @@ describe('ClothingItemDetailPage', () => {
 
     expect(component.item()).toBeNull();
     expect(component.isLoading()).toBe(false);
-
     expect(component.errorMessage()).toBe('Item could not be loaded.');
 
     expect(element.textContent).toContain('Item could not be loaded.');
-
     expect(element.querySelector('.detail-page__content')).toBeNull();
   });
 
@@ -182,13 +190,10 @@ describe('ClothingItemDetailPage', () => {
     createComponent();
 
     const element = fixture.nativeElement as HTMLElement;
-
     const image = element.querySelector<HTMLImageElement>('.detail-page__media img');
 
     expect(image).not.toBeNull();
-
     expect(image?.getAttribute('src')).toBe('/uploads/black-blazer.jpg');
-
     expect(image?.alt).toBe('Black Blazer');
   });
 
@@ -205,7 +210,6 @@ describe('ClothingItemDetailPage', () => {
     const element = fixture.nativeElement as HTMLElement;
 
     expect(element.querySelector('.detail-page__media img')).toBeNull();
-
     expect(element.querySelector('.detail-page__media')).not.toBeNull();
   });
 
@@ -241,17 +245,13 @@ describe('ClothingItemDetailPage', () => {
     createComponent();
 
     const element = fixture.nativeElement as HTMLElement;
-
     const contextLink = element.querySelector<HTMLAnchorElement>('.detail-page__context-link');
 
     expect(component.backLink()).toBe('/outfits/outfit-1');
-
     expect(component.backLabel()).toBe('Back to outfit');
 
     expect(contextLink).not.toBeNull();
-
     expect(contextLink?.textContent?.trim()).toBe('Back to outfit');
-
     expect(contextLink?.getAttribute('href')).toBe('/outfits/outfit-1');
   });
 
@@ -266,5 +266,77 @@ describe('ClothingItemDetailPage', () => {
     expect(component.backLabel()).toBe('Back to archive');
 
     expect(element.querySelector('.detail-page__context-link')).toBeNull();
+  });
+
+  it('should show and hide the delete confirmation', () => {
+    createComponent();
+
+    const element = fixture.nativeElement as HTMLElement;
+
+    expect(component.showDeleteConfirmation()).toBe(false);
+
+    component.requestDelete();
+    fixture.detectChanges();
+
+    expect(component.showDeleteConfirmation()).toBe(true);
+    expect(element.querySelector('.detail-page__delete-actions')).not.toBeNull();
+
+    component.cancelDelete();
+    fixture.detectChanges();
+
+    expect(component.showDeleteConfirmation()).toBe(false);
+    expect(element.querySelector('.detail-page__delete-actions')).toBeNull();
+  });
+
+  it('should delete the item and navigate to the archive', () => {
+    const deleteSubject = new Subject<{ message: string }>();
+
+    clothingItemServiceMock.deleteItem.mockReturnValue(deleteSubject.asObservable());
+
+    const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+
+    createComponent();
+
+    component.requestDelete();
+    component.deleteItem();
+
+    expect(clothingItemServiceMock.deleteItem).toHaveBeenCalledTimes(1);
+    expect(clothingItemServiceMock.deleteItem).toHaveBeenCalledWith('item-1');
+
+    expect(component.isDeleting()).toBe(true);
+    expect(component.deleteErrorMessage()).toBeNull();
+
+    deleteSubject.next({
+      message: 'Item gelöscht',
+    });
+    deleteSubject.complete();
+
+    expect(navigateSpy).toHaveBeenCalledTimes(1);
+    expect(navigateSpy).toHaveBeenCalledWith(['/']);
+  });
+
+  it('should handle an error when the item cannot be deleted', () => {
+    clothingItemServiceMock.deleteItem.mockReturnValue(
+      throwError(() => new Error('Delete failed')),
+    );
+
+    createComponent();
+
+    component.requestDelete();
+    component.deleteItem();
+    fixture.detectChanges();
+
+    expect(clothingItemServiceMock.deleteItem).toHaveBeenCalledWith('item-1');
+
+    expect(component.isDeleting()).toBe(false);
+    expect(component.showDeleteConfirmation()).toBe(true);
+
+    expect(component.errorMessage()).toBeNull();
+    expect(component.deleteErrorMessage()).toBe('Item could not be deleted.');
+
+    const element = fixture.nativeElement as HTMLElement;
+
+    expect(element.textContent).toContain('Item could not be deleted.');
+    expect(element.querySelector('.detail-page__content')).not.toBeNull();
   });
 });
