@@ -7,6 +7,7 @@ import { OutfitCreatePage } from './features/wardrobe/pages/outfit-create-page/o
 import { OutfitsPage } from './features/wardrobe/pages/outfits-page/outfits-page';
 import { OutfitDetailPage } from './features/wardrobe/pages/outfit-detail-page/outfit-detail-page';
 import { OutfitEditPage } from './features/wardrobe/pages/outfit-edit-page/outfit-edit-page';
+import { NotFoundPage } from './shared/pages/not-found-page';
 
 export const routes: Routes = [
   {
@@ -41,5 +42,9 @@ export const routes: Routes = [
   {
     path: 'items/:id',
     component: ClothingItemDetailPage,
+  },
+  {
+    path: '**',
+    component: NotFoundPage,
   },
 ];
