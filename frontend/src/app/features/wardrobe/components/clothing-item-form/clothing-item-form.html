@@ -14,43 +14,51 @@
   <div class="archive-form__field">
     <label for="category">Category</label>
 
-    <select id="category" formControlName="category">
-      @for (category of categories; track category) {
-        <option [value]="category">
-          {{ category }}
-        </option>
+    <div>
+      <select
+        id="category"
+        formControlName="category"
+        required
+        [class.archive-form__select--placeholder]="!itemForm.controls.category.value"
+      >
+        <option value="" disabled>select category</option>
+
+        @for (category of categories; track category) {
+          <option [value]="category">
+            {{ category | titlecase }}
+          </option>
+        }
+      </select>
+
+      @if (itemForm.controls.category.hasError('required') && itemForm.controls.category.touched) {
+        <p class="archive-form__error">Category is required.</p>
       }
-    </select>
+    </div>
   </div>
 
   <div class="archive-form__field">
     <label for="brand">Brand</label>
-    <input id="brand" type="text" formControlName="brand" placeholder="add brand" />
+    <input id="brand" type="text" formControlName="brand" placeholder="brand" />
   </div>
 
   <div class="archive-form__field">
     <label for="color">Color</label>
-    <input id="color" type="text" formControlName="color" placeholder="add color" />
+    <input id="color" type="text" formControlName="color" placeholder="color" />
   </div>
 
   <div class="archive-form__field">
     <label for="size">Size</label>
-    <input id="size" type="text" formControlName="size" placeholder="add size" />
+    <input id="size" type="text" formControlName="size" placeholder="size" />
   </div>
 
   <div class="archive-form__field">
     <label for="imageUrl">Image path</label>
-    <input id="imageUrl" type="text" formControlName="imageUrl" placeholder="add image url" />
+    <input id="imageUrl" type="text" formControlName="imageUrl" placeholder="image url" />
   </div>
 
   <div class="archive-form__field archive-form__field--textarea">
     <label for="notes">Notes</label>
-    <textarea
-      id="notes"
-      formControlName="notes"
-      rows="4"
-      placeholder="add personal notes"
-    ></textarea>
+    <textarea id="notes" formControlName="notes" rows="4" placeholder="personal notes"></textarea>
   </div>
 
   <label class="archive-form__checkbox">

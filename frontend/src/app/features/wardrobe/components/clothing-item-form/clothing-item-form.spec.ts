@@ -36,7 +36,7 @@ describe('ClothingItemForm', () => {
 
     expect(component.itemForm.getRawValue()).toEqual({
       name: '',
-      category: 'tops',
+      category: '',
       brand: '',
       color: '',
       size: '',
@@ -61,12 +61,31 @@ describe('ClothingItemForm', () => {
     ]);
 
     const element = fixture.nativeElement as HTMLElement;
-    const options = element.querySelectorAll<HTMLSelectElement>(
+
+    const options = element.querySelectorAll<HTMLOptionElement>(
       'select[formControlName="category"] option',
     );
 
-    expect(options.length).toBe(8);
-    expect(Array.from(options).map((option) => option.value)).toEqual(component.categories);
+    expect(options.length).toBe(9);
+
+    expect(options[0].value).toBe('');
+    expect(options[0].textContent?.trim()).toBe('select category');
+    expect(options[0].disabled).toBe(true);
+
+    const categoryOptions = Array.from(options).slice(1);
+
+    expect(categoryOptions.map((option) => option.value)).toEqual(component.categories);
+
+    expect(categoryOptions.map((option) => option.textContent?.trim())).toEqual([
+      'Tops',
+      'Bottoms',
+      'Dresses',
+      'Outerwear',
+      'Shoes',
+      'Bags',
+      'Accessories',
+      'Other',
+    ]);
   });
 
   it('should prefill the form when an initial item is provided', () => {
@@ -130,14 +149,24 @@ describe('ClothingItemForm', () => {
     fixture.detectChanges();
 
     const nameControl = component.itemForm.controls.name;
+    const categoryControl = component.itemForm.controls.category;
+
     const element = fixture.nativeElement as HTMLElement;
-    const errorElement = element.querySelector('.archive-form__error');
+    const errorElements = element.querySelectorAll('.archive-form__error');
+
+    const errorMessages = Array.from(errorElements).map((error) => error.textContent?.trim());
 
     expect(component.itemForm.invalid).toBe(true);
+
     expect(nameControl.touched).toBe(true);
     expect(nameControl.hasError('required')).toBe(true);
 
-    expect(errorElement?.textContent?.trim()).toBe('Name is required.');
+    expect(categoryControl.touched).toBe(true);
+    expect(categoryControl.hasError('required')).toBe(true);
+
+    expect(errorMessages).toContain('Name is required.');
+    expect(errorMessages).toContain('Category is required.');
+
     expect(emitSpy).not.toHaveBeenCalled();
   });
 

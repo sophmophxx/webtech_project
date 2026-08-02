@@ -51,6 +51,14 @@
   cursor: pointer;
 }
 
+.archive-form select.archive-form__select--placeholder {
+  color: rgba(0, 0, 0, 0.32);
+}
+
+.archive-form select option {
+  color: #000000;
+}
+
 .archive-form textarea {
   resize: vertical;
   min-height: 96px;
